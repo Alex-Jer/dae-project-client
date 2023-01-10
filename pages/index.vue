@@ -1,15 +1,68 @@
+<script setup>
+import { reactive } from 'vue';
+import { useRouter } from 'vue-router';
+import { mdiAccount, mdiAsterisk } from '@mdi/js';
+import SectionFullScreen from '@/components/SectionFullScreen.vue';
+import CardBox from '@/components/CardBox.vue';
+import FormCheckRadio from '@/components/FormCheckRadio.vue';
+import FormField from '@/components/FormField.vue';
+import FormControl from '@/components/FormControl.vue';
+import BaseButton from '@/components/BaseButton.vue';
+import BaseButtons from '@/components/BaseButtons.vue';
+// import LayoutGuest from '@/layouts/LayoutGuest.vue';
+
+const form = reactive({
+  login: 'john.doe',
+  pass: 'highly-secure-password-fYjUw-',
+  remember: true,
+});
+
+const router = useRouter();
+
+const submit = () => {
+  router.push('/dashboard');
+};
+</script>
+
 <template>
-  <b-container>
-    <h1>Welcome to Academics Management</h1>
-    <ul>
-      <li>
-        <span>Please visit our</span>
-        <nuxt-link to="/students" class="btn btn-link">Students</nuxt-link>
-      </li>
-      <li>
-        <span>Please visit our</span>
-        <nuxt-link to="/teachers" class="btn btn-link">Teachers</nuxt-link>
-      </li>
-    </ul>
-  </b-container>
+  <div>
+    <NuxtLayout>
+      <SectionFullScreen v-slot="{ cardClass }" bg="purplePink">
+        <CardBox :class="cardClass" is-form @submit.prevent="submit">
+          <FormField label="Login" help="Please enter your login">
+            <FormControl
+              v-model="form.login"
+              :icon="mdiAccount"
+              name="login"
+              autocomplete="username"
+            />
+          </FormField>
+
+          <FormField label="Password" help="Please enter your password">
+            <FormControl
+              v-model="form.pass"
+              :icon="mdiAsterisk"
+              type="password"
+              name="password"
+              autocomplete="current-password"
+            />
+          </FormField>
+
+          <FormCheckRadio
+            v-model="form.remember"
+            name="remember"
+            label="Remember"
+            :input-value="true"
+          />
+
+          <template #footer>
+            <BaseButtons>
+              <BaseButton type="submit" color="info" label="Login" />
+              <BaseButton to="/dashboard" color="info" outline label="Back" />
+            </BaseButtons>
+          </template>
+        </CardBox>
+      </SectionFullScreen>
+    </NuxtLayout>
+  </div>
 </template>
