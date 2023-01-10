@@ -1,5 +1,5 @@
 <template>
-  <aside class="aside is-placed-left">
+  <aside v-show="isAsideVisible" class="aside is-placed-left">
     <div class="aside-tools">
       <a
         class="navbar-item is-hidden-touch is-hidden-widescreen is-desktop-icon-only"

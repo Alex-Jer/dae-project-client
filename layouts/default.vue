@@ -2,17 +2,9 @@
   <div id="app">
     <nav-bar />
     <aside-menu :menu="menu" />
-    <nuxt></nuxt>
-  </div>
-</template>
-
-<!-- <template>
-  <div>
-    <nav-bar />
-    <aside-menu :menu="menu" />
     <Nuxt />
   </div>
-</template> -->
+</template>
 
 <script>
 import { defineComponent } from 'vue'
