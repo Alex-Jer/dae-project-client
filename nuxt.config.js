@@ -35,14 +35,49 @@ export default {
     'nuxt-buefy',
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@nuxtjs/toast',
+    '@nuxtjs/auth',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    // baseURL: '/',
     proxy: true,
-    credentials: true,
+    baseURL: '/',
+    // credentials: true,
+  },
+
+  // Auth module configuration: https://auth.nuxtjs.org/
+  auth: {
+    redirect: {
+      login: '/auth/login',
+      logout: '/',
+      home: '/',
+    },
+    watchLoggedIn: true,
+    strategies: {
+      local: {
+        endpoints: {
+          login: {
+            url: '/api/auth/login',
+            method: 'post',
+            propertyName: null,
+          },
+          logout: false,
+          user: {
+            url: '/api/auth/user',
+            method: 'get',
+            propertyName: null,
+          },
+        },
+        // tokenRequired: true, -> default
+        // tokenType: 'bearer' -> default
+      },
+    },
+  },
+
+  router: {
+    middleware: ['auth'],
   },
 
   proxy: {

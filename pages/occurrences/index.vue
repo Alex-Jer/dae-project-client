@@ -34,9 +34,11 @@ export default defineComponent({
     }
   },
   created() {
-    this.$axios.$get('/api/occurrences').then((occurrences) => {
-      this.occurrences = occurrences
-    })
+    this.$axios
+      .$get(`/api/customers/${this.$auth.user.vat}/occurrences`)
+      .then((occurrences) => {
+        this.occurrences = occurrences
+      })
   },
 })
 </script>
