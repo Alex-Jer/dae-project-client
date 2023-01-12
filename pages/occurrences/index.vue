@@ -1,7 +1,7 @@
 <template>
   <div>
     <hero-bar>
-      Occurrences
+      My Occurrences
       <router-link slot="right" to="occurrences/create" class="button is-info">
         <b-icon icon="plus-circle" custom-size="default" />
         <span>New Occurrence</span>
