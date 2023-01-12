@@ -21,11 +21,8 @@
 
       <b-table-column v-slot="props" custom-key="actions" cell-class="is-actions-cell">
         <div class="buttons is-right no-wrap">
-          <nuxt-link :to="`/policies/${props.row.code}`" class="button is-small is-primary">
+          <nuxt-link :to="`/policies/${props.row.code}`" class="button is-small is-info">
             <b-icon icon="eye" size="is-small" />
-          </nuxt-link>
-          <nuxt-link :to="`/policies/${props.row.code}/edit`" class="button is-small is-info">
-            <b-icon icon="pencil" size="is-small" />
           </nuxt-link>
           <b-button type="is-danger" size="is-small" @click.prevent="trashModalOpen(props.row)">
             <b-icon icon="trash-can" size="is-small" />
