@@ -21,7 +21,7 @@ export default [
     },
     {
       to: '/policies/86084/occurrences',
-      label: "Test P's Occurences",
+      label: 'Policy Details Test',
       icon: 'table',
     },
     {
