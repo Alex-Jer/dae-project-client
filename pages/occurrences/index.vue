@@ -1,7 +1,7 @@
 <template>
   <div>
     <hero-bar>
-      {{ getName }}
+      {{ getTitle }}
       <router-link slot="right" to="occurrences/create" class="button is-info">
         <b-icon icon="plus-circle" custom-size="default" />
         <span>New Occurrence</span>
@@ -35,8 +35,8 @@ export default defineComponent({
     }
   },
   computed: {
-    getName() {
-      switch (this.$auth.user.type) {
+    getTitle() {
+      switch (this.$auth.user.role) {
         case 'Customer':
           return `My Occurrences`
         case 'Repairer':
@@ -49,7 +49,7 @@ export default defineComponent({
     },
 
     getUrl() {
-      switch (this.$auth.user.type) {
+      switch (this.$auth.user.role) {
         case 'Customer':
           return `/api/customers/${this.$auth.user.vat}/occurrences`
         case 'Repairer':
