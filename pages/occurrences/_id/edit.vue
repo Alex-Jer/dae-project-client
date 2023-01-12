@@ -18,10 +18,10 @@
           <b-field horizontal>
             <b-field grouped>
               <div class="control">
-                <b-button native-type="submit" type="is-info"> Submit </b-button>
+                <b-button native-type="submit" type="is-info">Submit</b-button>
               </div>
               <div class="control">
-                <b-button type="is-info is-outlined" @click.prevent="formAction"> Reset </b-button>
+                <b-button type="is-info is-outlined" @click.prevent="formReset">Reset</b-button>
               </div>
             </b-field>
           </b-field>
@@ -69,12 +69,12 @@ export default defineComponent({
     })
   },
   methods: {
+    formReset() {
+      this.form.policy = this.occurrence.policy
+      this.form.description = this.occurrence.description
+      this.form.files = null
+    },
     formAction() {
-      // if (!this.hasFile) {
-      //   this.$toast.error('You must include at least one file!').goAway(3000)
-      //   return
-      // }
-
       const promise = this.$axios.$put(`/api/customers/${this.$auth.user.vat}/occurrences/${this.id}`, {
         description: this.form.description,
         policy: this.form.policy,
