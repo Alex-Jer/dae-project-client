@@ -3,15 +3,12 @@
     <hero-bar>
       Occurrences
       <router-link slot="right" to="occurrences/create" class="button is-info">
-        New Occurrence
+        <b-icon icon="plus-circle" custom-size="default" />
+        <span>New Occurrence</span>
       </router-link>
     </hero-bar>
     <section class="section is-main-section">
-      <card-component
-        class="has-table has-mobile-sort-spaced"
-        title="Occurrences"
-        icon="account-multiple"
-      >
+      <card-component class="has-table has-mobile-sort-spaced" title="Occurrences" icon="clipboard-list">
         <occurrences-table :occurrences="occurrences" />
       </card-component>
 
@@ -38,11 +35,9 @@ export default defineComponent({
     }
   },
   created() {
-    this.$axios
-      .$get(`/api/customers/${this.$auth.user.vat}/occurrences`)
-      .then((occurrences) => {
-        this.occurrences = occurrences
-      })
+    this.$axios.$get(`/api/customers/${this.$auth.user.vat}/occurrences`).then((occurrences) => {
+      this.occurrences = occurrences
+    })
   },
 })
 </script>

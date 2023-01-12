@@ -9,10 +9,7 @@
             </h1>
           </div>
         </div>
-        <div
-          v-show="hasRightVisible"
-          class="level-right"
-        >
+        <div v-show="hasRightVisible" class="level-right">
           <div class="level-item">
             <slot name="right" />
           </div>
@@ -30,8 +27,8 @@ export default defineComponent({
   props: {
     hasRightVisible: {
       type: Boolean,
-      default: true
-    }
-  }
+      default: true,
+    },
+  },
 })
 </script>

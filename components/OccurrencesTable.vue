@@ -6,24 +6,12 @@
       @confirm="trashConfirm"
       @cancel="trashCancel"
     />
-    <b-table
-      :paginated="paginated"
-      :per-page="perPage"
-      :data="occurrences"
-      default-sort="name"
-      striped
-      hoverable
-    >
+    <b-table :paginated="paginated" :per-page="perPage" :data="occurrences" default-sort="name" striped hoverable>
       <b-table-column v-slot="props" label="ID" field="id" sortable>
         {{ props.row.id }}
       </b-table-column>
 
-      <b-table-column
-        v-slot="props"
-        label="Description"
-        field="description"
-        sortable
-      >
+      <b-table-column v-slot="props" label="Description" field="description" sortable>
         {{ props.row.description }}
       </b-table-column>
 
@@ -31,23 +19,12 @@
         {{ props.row.status }}
       </b-table-column>
 
-      <b-table-column
-        v-slot="props"
-        custom-key="actions"
-        cell-class="is-actions-cell"
-      >
+      <b-table-column v-slot="props" custom-key="actions" cell-class="is-actions-cell">
         <div class="buttons is-right no-wrap">
-          <router-link
-            :to="{ name: 'occurrence.edit', params: { id: props.row.id } }"
-            class="button is-small is-info"
-          >
-            <b-icon icon="account-edit" size="is-small" />
+          <router-link :to="{ name: 'occurrence.edit', params: { id: props.row.id } }" class="button is-small is-info">
+            <b-icon icon="pencil" size="is-small" />
           </router-link>
-          <b-button
-            type="is-danger"
-            size="is-small"
-            @click.prevent="trashModalOpen(props.row)"
-          >
+          <b-button type="is-danger" size="is-small" @click.prevent="trashModalOpen(props.row)">
             <b-icon icon="trash-can" size="is-small" />
           </b-button>
         </div>
@@ -58,11 +35,9 @@
 
 <script>
 import { defineComponent } from 'vue'
-// import { mapState } from 'vuex'
 import ModalBox from '@/components/ModalBox.vue'
 
 export default defineComponent({
-  name: 'OccurrencesTable',
   components: { ModalBox },
   props: {
     isEmpty: Boolean,
@@ -85,7 +60,6 @@ export default defineComponent({
     paginated() {
       return this.occurrences?.length > this.perPage
     },
-    // ...mapState(['clients']),
   },
   methods: {
     trashModalOpen(obj) {
