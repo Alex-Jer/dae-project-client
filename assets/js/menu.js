@@ -20,6 +20,11 @@ export default [
       icon: 'table',
     },
     {
+      to: '/policies/86084/occurrences',
+      label: "Test P's Occurences",
+      icon: 'table',
+    },
+    {
       to: '/forms',
       label: 'Forms',
       icon: 'square-edit-outline',

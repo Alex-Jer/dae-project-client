@@ -1,0 +1,11 @@
+{
+    "folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../dae-project-api/dae-faker-generator"
+		}
+	],
+    "settings": {}
+}
