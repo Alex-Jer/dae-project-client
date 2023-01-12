@@ -15,15 +15,19 @@
         {{ props.row.description }}
       </b-table-column>
 
+      <b-table-column v-slot="props" label="Policy" field="policy" sortable>
+        {{ props.row.policy }}
+      </b-table-column>
+
       <b-table-column v-slot="props" label="Status" field="status" sortable>
         {{ props.row.status }}
       </b-table-column>
 
       <b-table-column v-slot="props" custom-key="actions" cell-class="is-actions-cell">
         <div class="buttons is-right no-wrap">
-          <router-link :to="{ name: 'occurrence.edit', params: { id: props.row.id } }" class="button is-small is-info">
+          <nuxt-link :to="`/occurrences/${props.row.id}/edit`" class="button is-small is-info">
             <b-icon icon="pencil" size="is-small" />
-          </router-link>
+          </nuxt-link>
           <b-button type="is-danger" size="is-small" @click.prevent="trashModalOpen(props.row)">
             <b-icon icon="trash-can" size="is-small" />
           </b-button>
