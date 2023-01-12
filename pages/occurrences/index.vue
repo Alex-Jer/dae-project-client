@@ -1,6 +1,11 @@
 <template>
   <div>
-    <hero-bar> Occurrences </hero-bar>
+    <hero-bar>
+      Occurrences
+      <router-link slot="right" to="occurrences/create" class="button is-info">
+        New Occurrence
+      </router-link>
+    </hero-bar>
     <section class="section is-main-section">
       <card-component
         class="has-table has-mobile-sort-spaced"
@@ -22,7 +27,6 @@ import CardComponent from '@/components/CardComponent.vue'
 import HeroBar from '@/components/HeroBar.vue'
 
 export default defineComponent({
-  name: 'TablesView',
   components: {
     HeroBar,
     CardComponent,
