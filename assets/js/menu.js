@@ -25,6 +25,11 @@ export default [
       icon: 'table',
     },
     {
+      to: '/occurrences/1',
+      label: 'Occurrence Det Test',
+      icon: 'table',
+    },
+    {
       to: '/forms',
       label: 'Forms',
       icon: 'square-edit-outline',
