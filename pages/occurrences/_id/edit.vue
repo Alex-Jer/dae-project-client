@@ -75,32 +75,27 @@ export default defineComponent({
       this.form.files = null
     },
     formAction() {
-      const promise = this.$axios.$put(`/api/customers/${this.$auth.user.vat}/occurrences/${this.id}`, {
-        description: this.form.description,
-        policy: this.form.policy,
-      })
-
-      let errorMsg = ''
-
-      if (this.hasFile)
-        promise.then((occurrence) => {
-          this.form.files.forEach((file) => {
-            const fd = new FormData()
-            fd.append('file', file)
-            this.$axios
-              .post(`/api/occurrences/${occurrence.id}/documents`, fd, {
-                headers: { 'Content-Type': 'multipart/form-data' },
-              })
-              .catch(() => (errorMsg = 'File upload failed!'))
-          })
-        })
-
-      promise.then(() => this.$router.push('/occurrences'))
-      promise.catch(() => (errorMsg = 'Error editing occurrence!'))
-
-      if (errorMsg) this.$toast.error(errorMsg).goAway(3000)
-
-      this.$toast.success('Occurrence edited!').goAway(3000)
+      // const promise = this.$axios.$put(`/api/customers/${this.$auth.user.vat}/occurrences/${this.id}`, {
+      //   description: this.form.description,
+      //   policy: this.form.policy,
+      // })
+      // let errorMsg = ''
+      // if (this.hasFile)
+      //   promise.then((occurrence) => {
+      //     this.form.files.forEach((file) => {
+      //       const fd = new FormData()
+      //       fd.append('file', file)
+      //       this.$axios
+      //         .post(`/api/occurrences/${occurrence.id}/documents`, fd, {
+      //           headers: { 'Content-Type': 'multipart/form-data' },
+      //         })
+      //         .catch(() => (errorMsg = 'File upload failed!'))
+      //     })
+      //   })
+      // promise.then(() => this.$router.push('/occurrences'))
+      // promise.catch(() => (errorMsg = 'Error editing occurrence!'))
+      // if (errorMsg) this.$toast.error(errorMsg).goAway(3000)
+      // this.$toast.success('Occurrence edited!').goAway(3000)
     },
   },
 })
