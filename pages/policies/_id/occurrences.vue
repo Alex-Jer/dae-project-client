@@ -6,7 +6,7 @@
     </hero-bar>
     <section class="section is-main-section">
       <card-component class="has-table has-mobile-sort-spaced" title="Occurrences" icon="clipboard-list">
-        <occurrences-table :occurrences="occurrences" />
+        <occurrences-table :occurrences="occurrences" :show-policy="false" />
       </card-component>
 
       <hr />

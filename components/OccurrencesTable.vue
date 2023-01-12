@@ -12,10 +12,10 @@
       </b-table-column>
 
       <b-table-column v-slot="props" label="Description" field="description" sortable>
-        {{ props.row.description }}
+        {{ props.row.description.length > 50 ? props.row.description.substring(0, 50) + '...' : props.row.description }}
       </b-table-column>
 
-      <b-table-column v-slot="props" label="Policy" field="policy" sortable>
+      <b-table-column v-if="showPolicy" v-slot="props" label="Policy" field="policy" sortable>
         {{ props.row.policy }}
       </b-table-column>
 
@@ -52,6 +52,10 @@ export default defineComponent({
     occurrences: {
       type: Array,
       default: () => [],
+    },
+    showPolicy: {
+      type: Boolean,
+      default: true,
     },
   },
   data() {
