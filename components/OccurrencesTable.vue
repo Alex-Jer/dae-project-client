@@ -23,7 +23,7 @@
         {{ props.row.status }}
       </b-table-column>
 
-      <b-table-column v-slot="props" custom-key="actions" cell-class="is-actions-cell">
+      <b-table-column v-if="showAdminActions" v-slot="props" custom-key="actions" cell-class="is-actions-cell">
         <div class="buttons is-right no-wrap">
           <nuxt-link :to="`/occurrences/${props.row.id}/edit`" class="button is-small is-info">
             <b-icon icon="pencil" size="is-small" />
@@ -54,6 +54,10 @@ export default defineComponent({
       default: () => [],
     },
     showPolicy: {
+      type: Boolean,
+      default: true,
+    },
+    showAdminActions: {
       type: Boolean,
       default: true,
     },
