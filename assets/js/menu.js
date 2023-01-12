@@ -10,6 +10,11 @@ export default [
   'Examples',
   [
     {
+      to: '/policies',
+      label: 'Policies',
+      icon: 'table',
+    },
+    {
       to: '/occurrences',
       label: 'Occurrences',
       icon: 'table',

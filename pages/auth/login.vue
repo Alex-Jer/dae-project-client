@@ -53,9 +53,7 @@ export default {
       })
 
       promise.catch(() => {
-        this.$toast
-          .error("We couldn't log you in. Please check your credentials.")
-          .goAway(3000)
+        this.$toast.error("We couldn't log you in. Please check your credentials.").goAway(3000)
       })
     },
   },
