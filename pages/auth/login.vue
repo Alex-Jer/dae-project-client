@@ -49,7 +49,7 @@ export default {
         // eg: IF role is 'Student' THEN it will redirect to: /students/{username}
         // WARN: be aware that if you don't have pages for each role, it will not work
         // this.$router.push(`/${this.$auth.user.role.toLowerCase()}s/` + this.vat)
-        this.$router.push('/occurrences')
+        this.$router.push('/policies')
       })
 
       promise.catch(() => {
