@@ -5,43 +5,23 @@
       <card-component title="Create Occurrence" icon="ballot">
         <form @submit.prevent="formAction">
           <b-field label="Policy" horizontal>
-            <b-input
-              v-model="form.policy"
-              placeholder="e.g. 65B-510"
-              required
-            />
+            <b-input v-model="form.policy" placeholder="e.g. 65B-510" required />
           </b-field>
-          <b-field
-            label="Description"
-            message="The description of your occurrence. Max 255 characters"
-            horizontal
-          >
-            <b-input
-              v-model="form.description"
-              type="textarea"
-              maxlength="255"
-              required
-            />
+          <b-field label="Description" message="The description of your occurrence. Max 255 characters" horizontal>
+            <b-input v-model="form.description" type="textarea" maxlength="255" required />
           </b-field>
           <hr />
           <b-field label="Files" horizontal>
-            <file-picker v-model="form.file" type="is-info" />
+            <file-picker v-model="form.files" type="is-info" />
           </b-field>
           <hr />
           <b-field horizontal>
             <b-field grouped>
               <div class="control">
-                <b-button native-type="submit" type="is-info">
-                  Submit
-                </b-button>
+                <b-button native-type="submit" type="is-info"> Submit </b-button>
               </div>
               <div class="control">
-                <b-button
-                  type="is-info is-outlined"
-                  @click.prevent="formAction"
-                >
-                  Reset
-                </b-button>
+                <b-button type="is-info is-outlined" @click.prevent="formAction"> Reset </b-button>
               </div>
             </b-field>
           </b-field>
@@ -68,41 +48,47 @@ export default defineComponent({
       form: {
         policy: '4241',
         description: 'blablabla',
-        file: null,
+        files: null,
       },
     }
   },
   computed: {
     hasFile() {
-      return this.form.file != null
+      return this.form.files != null
     },
   },
   methods: {
     formAction() {
       if (!this.hasFile) {
-        this.$toast.error('You must include a file!').goAway(3000)
+        this.$toast.error('You must include at least one file!').goAway(3000)
         return
       }
 
-      const promise = this.$axios.$post(
-        `/api/customers/${this.$auth.user.vat}/occurrences`,
-        {
-          description: this.form.description,
-          policy: this.form.policy,
-        }
-      )
+      const promise = this.$axios.$post(`/api/customers/${this.$auth.user.vat}/occurrences`, {
+        description: this.form.description,
+        policy: this.form.policy,
+      })
+
+      let errorMsg = ''
 
       promise.then((occurrence) => {
-        const fd = new FormData()
-        fd.append('file', this.form.file)
-
-        this.$axios
-          .post(`/api/occurrences/${occurrence.id}/documents`, fd, {
-            headers: { 'Content-Type': 'multipart/form-data' },
-          })
-          .then(() => this.$toast.success('Occurrence created!').goAway(3000))
-          .catch(() => this.$toast.error('Error uploading file!').goAway(3000))
+        this.form.files.forEach((file) => {
+          const fd = new FormData()
+          fd.append('file', file)
+          this.$axios
+            .post(`/api/occurrences/${occurrence.id}/documents`, fd, {
+              headers: { 'Content-Type': 'multipart/form-data' },
+            })
+            .catch(() => (errorMsg = 'File upload failed!'))
+        })
+        this.$router.push('/occurrences')
       })
+
+      promise.catch(() => (errorMsg = 'Error creating occurrence!'))
+
+      if (errorMsg) this.$toast.error(errorMsg).goAway(3000)
+
+      this.$toast.success('Occurrence created!').goAway(3000)
     },
   },
 })

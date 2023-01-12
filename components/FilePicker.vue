@@ -1,88 +1,52 @@
 <template>
-  <b-field
-    class="file"
-  >
-    <b-upload
-      v-model="file"
-      :accept="accept"
-      @input="upload"
-    >
-      <a
-        class="button"
-        :class="type"
+  <section>
+    <b-field>
+      <b-upload v-model="dropFiles" multiple drag-drop @input="upload">
+        <section class="section">
+          <div class="content has-text-centered">
+            <p>
+              <b-icon icon="upload" size="is-large"> </b-icon>
+            </p>
+            <p>Drop your files here or click to upload</p>
+          </div>
+        </section>
+      </b-upload>
+    </b-field>
+
+    <div class="tags mt-2">
+      <span
+        v-for="(file, index) in dropFiles"
+        :key="index"
+        class="tag is-primary"
       >
-        <b-icon
-          icon="upload"
-          custom-size="default"
-        />
-        <span>{{ buttonLabel }}</span>
-      </a>
-    </b-upload>
-    <span
-      v-if="file"
-      class="file-name"
-    >{{ file.name }}</span>
-  </b-field>
+        {{ file.name }}
+        <button
+          class="delete is-small"
+          type="button"
+          @click="deleteDropFile(index)"
+        ></button>
+      </span>
+    </div>
+  </section>
 </template>
 
 <script>
 import { defineComponent } from 'vue'
-
 export default defineComponent({
-  name: 'FilePicker',
-  props: {
-    accept: {
-      type: String,
-      default: null
-    },
-    type: {
-      type: String,
-      default: 'is-primary'
-    }
-  },
   emits: ['input'],
-  data () {
+  data() {
     return {
-      file: null
-      // uploadPercent: 0
-    }
-  },
-  computed: {
-    buttonLabel () {
-      return this.file ? 'Pick another file' : 'Pick a file'
+      dropFiles: [],
     }
   },
   methods: {
-    upload (value) {
-      this.file = value
-
+    deleteDropFile(index) {
+      this.dropFiles.splice(index, 1)
+    },
+    upload(value) {
+      this.dropFiles = value
       this.$emit('input', value)
-
-      // Use this as an example for handling file uploads
-      // let formData = new FormData()
-      // formData.append('file', file.value)
-
-      // const mediaStoreRoute = `/your-route/`
-
-      // axios
-      //   .post(mediaStoreRoute, formData, {
-      //     headers: {
-      //       'Content-Type': 'multipart/form-data'
-      //     },
-      //     onUploadProgress: progressEvent
-      //   })
-      //   .then(r => {
-      //
-      //   })
-      //   .catch(err => {
-      //
-      //   })
-    }
-    // progressEvent (progressEvent) {
-    //   this.uploadPercent = Math.round(
-    //     (progressEvent.loaded * 100) / progressEvent.total
-    //   )
-    // }
-  }
+    },
+  },
 })
 </script>
