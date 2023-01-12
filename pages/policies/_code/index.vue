@@ -2,11 +2,11 @@
   <div>
     <hero-bar>
       Policy Details
-      <span class="subtitle">#{{ id }}</span>
+      <span class="subtitle">#{{ code }}</span>
     </hero-bar>
     <section class="section is-main-section">
       <card-component title="Details" icon="ballot">
-        <b-field label="Policy Code" horizontal> {{ id }} </b-field>
+        <b-field label="Policy Code" horizontal> {{ code }} </b-field>
         <b-field label="Insurer Company" horizontal> {{ policy.insurerCompany }} </b-field>
         <b-field label="Type" horizontal> {{ policy.type }} </b-field>
         <b-field label="Covers" horizontal> {{ formatCovers ?? 'unknown' }} </b-field>
@@ -39,8 +39,8 @@ export default defineComponent({
     }
   },
   computed: {
-    id() {
-      return this.$route.params.id
+    code() {
+      return this.$route.params.code
     },
     formatCovers() {
       if (this.policy.covers) {
@@ -54,10 +54,10 @@ export default defineComponent({
     },
   },
   created() {
-    this.$axios.$get(`/api/policies/${this.id}`).then((policy) => {
+    this.$axios.$get(`/api/policies/${this.code}`).then((policy) => {
       if (policy && policy[0]) this.policy = policy[0]
     })
-    this.$axios.$get(`/api/policies/${this.id}/occurrences`).then((occurrences) => {
+    this.$axios.$get(`/api/policies/${this.code}/occurrences`).then((occurrences) => {
       this.occurrences = occurrences
     })
   },

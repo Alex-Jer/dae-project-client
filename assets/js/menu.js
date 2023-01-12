@@ -20,11 +20,6 @@ export default [
       icon: 'table',
     },
     {
-      to: '/policies/86084',
-      label: 'Policy Details Test',
-      icon: 'table',
-    },
-    {
       to: '/occurrences/1',
       label: 'Occurrence Det Test',
       icon: 'table',
