@@ -69,7 +69,7 @@ export default defineComponent({
     download(fileToDownload) {
       this.$axios
         .$get(`/api/occurrences/${this.$props.occurrenceId}/documents/${fileToDownload.id}`, {
-          responseType: 'arrayBuffer',
+          responseType: 'blob',
         })
         .then((file) => {
           const url = window.URL.createObjectURL(new Blob([file]))
