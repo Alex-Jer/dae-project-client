@@ -20,7 +20,7 @@ export default [
       icon: 'table',
     },
     {
-      to: '/policies/86084/occurrences',
+      to: '/policies/86084',
       label: 'Policy Details Test',
       icon: 'table',
     },
