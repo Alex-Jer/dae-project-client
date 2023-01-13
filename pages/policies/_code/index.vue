@@ -55,7 +55,7 @@ export default defineComponent({
   },
   created() {
     this.$axios.$get(`/api/policies/${this.code}`).then((policy) => {
-      if (policy && policy[0]) this.policy = policy[0]
+      if (policy) this.policy = policy
     })
     this.$axios.$get(`/api/policies/${this.code}/occurrences`).then((occurrences) => {
       this.occurrences = occurrences

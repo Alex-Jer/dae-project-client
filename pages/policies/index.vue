@@ -1,6 +1,6 @@
 <template>
   <div>
-    <hero-bar> My Policies </hero-bar>
+    <hero-bar> {{ $auth.user.role == 'Customer' ? 'My Policies' : 'All Policies' }} </hero-bar>
     <section class="section is-main-section">
       <card-component class="has-table has-mobile-sort-spaced" title="Policies" icon="clipboard-list">
         <policies-table :policies="policies" />
@@ -29,9 +29,11 @@ export default defineComponent({
     }
   },
   created() {
-    this.$axios.$get(`/api/customers/${this.$auth.user.vat}/policies`).then((policies) => {
-      this.policies = policies
-    })
+    this.$axios
+      .$get(this.$auth.user.role === 'Customer' ? `/api/customers/${this.$auth.user.vat}/policies` : `/api/policies`)
+      .then((policies) => {
+        this.policies = policies
+      })
   },
 })
 </script>
