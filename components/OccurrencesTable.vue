@@ -24,13 +24,9 @@
       @confirm="rejectConfirm"
       @cancel="rejectCancel"
     />
-    <b-table :paginated="paginated" :per-page="perPage" :data="occurrences" default-sort="name" striped hoverable>
+    <b-table :paginated="paginated" :per-page="perPage" :data="occurrences" default-sort="id" striped hoverable>
       <b-table-column v-slot="props" label="ID" field="id" sortable>
         {{ props.row.id }}
-      </b-table-column>
-
-      <b-table-column v-slot="props" label="Description" field="description" sortable>
-        {{ props.row.description.length > 50 ? props.row.description.substring(0, 50) + '...' : props.row.description }}
       </b-table-column>
 
       <b-table-column v-if="showPolicy" v-slot="props" label="Policy" field="policy" sortable>
@@ -38,7 +34,11 @@
       </b-table-column>
 
       <b-table-column v-slot="props" label="Status" field="status" sortable>
-        {{ props.row.status }}
+        {{ capitalizeFirstLetter(props.row.status) }}
+      </b-table-column>
+
+      <b-table-column v-slot="props" label="Description" field="description" sortable>
+        {{ props.row.description.length > 50 ? props.row.description.substring(0, 50) + '...' : props.row.description }}
       </b-table-column>
 
       <b-table-column v-slot="props" custom-key="actions" cell-class="is-actions-cell">
@@ -153,6 +153,9 @@ export default defineComponent({
     },
     rejectCancel() {
       this.isRejectModalActive = false
+    },
+    capitalizeFirstLetter(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
     },
   },
 })
