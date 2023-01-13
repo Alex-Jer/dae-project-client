@@ -1,59 +1,20 @@
 <template>
-  <card-component
-    title="Edit Profile"
-    icon="account-circle"
-  >
-    <form @submit.prevent="submit">
-      <b-field
-        horizontal
-        label="Avatar"
-      >
-        <file-picker type="is-info" />
+  <card-component title="Edit Profile" icon="account-circle">
+    <form @submit.prevent="formAction">
+      <b-field label="Name" message="Required. Your name">
+        <b-input v-model="form.name" name="name" required />
       </b-field>
-      <hr>
-      <b-field
-        horizontal
-        label="Name"
-        message="Required. Your name"
-      >
-        <b-input
-          v-model="userName"
-          name="name"
-          required
-        />
+      <b-field label="E-mail" message="Required. Your e-mail">
+        <b-input v-model="form.email" name="email" type="email" required />
       </b-field>
-      <b-field
-        horizontal
-        label="E-mail"
-        message="Required. Your e-mail"
-      >
-        <b-input
-          v-model="userEmail"
-          name="email"
-          type="email"
-          required
-        />
-      </b-field>
-      <hr>
-      <b-field horizontal>
+      <hr />
+      <b-field>
         <b-field grouped>
           <div class="control">
-            <b-button
-              native-type="submit"
-              type="is-info"
-              :loading="isLoading"
-            >
-              Submit
-            </b-button>
+            <b-button native-type="submit" type="is-info"> Submit </b-button>
           </div>
           <div class="control">
-            <b-button
-              type="is-info"
-              native-type="button"
-              outlined
-            >
-              Reset
-            </b-button>
+            <b-button type="is-info" native-type="button" outlined> Reset </b-button>
           </div>
         </b-field>
       </b-field>
@@ -63,51 +24,42 @@
 
 <script>
 import { defineComponent } from 'vue'
-import FilePicker from '@/components/FilePicker.vue'
 import CardComponent from '@/components/CardComponent.vue'
 
 export default defineComponent({
-  name: 'ProfileUpdateForm',
   components: {
     CardComponent,
-    FilePicker
   },
-  data () {
+  data() {
     return {
-      isLoading: false
+      form: {
+        name: null,
+        email: null,
+      },
     }
   },
-  computed: {
-    userName: {
-      get: function () {
-        return this.$store.state.userName
-      },
-      set: function (name) {
-        this.$store.commit('user', { name })
-      }
-    },
-    userEmail: {
-      get: function () {
-        return this.$store.state.userEmail
-      },
-      set: function (email) {
-        this.$store.commit('user', { email })
-      }
-    }
+  created() {
+    this.form.name = this.$auth.user.name
+    this.form.email = this.$auth.user.email
   },
   methods: {
-    submit () {
-      this.isLoading = true
+    async formAction() {
+      let errorMsg = ''
 
-      setTimeout(() => {
-        this.isLoading = false
-
-        this.$buefy.snackbar.open({
-          message: 'Demo only',
-          queue: false
+      await this.$axios
+        .$put(`/api/users/${this.$auth.user.vat}`, {
+          name: this.form.name,
+          email: this.form.email,
         })
-      }, 750)
-    }
-  }
+        .catch(() => (errorMsg = 'Error editing profile!'))
+
+      if (errorMsg) {
+        this.$toast.error(errorMsg).goAway(6000)
+        return
+      }
+
+      this.$toast.success('Profile updated!').goAway(6000)
+    },
+  },
 })
 </script>
