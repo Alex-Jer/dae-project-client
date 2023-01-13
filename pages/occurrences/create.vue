@@ -4,17 +4,36 @@
     <section class="section is-main-section">
       <card-component title="Create Occurrence" icon="ballot">
         <form @submit.prevent="formAction">
-          <b-field label="Policy" horizontal>
-            <b-input v-model="form.policy" placeholder="e.g. 65B-510" required />
+          <b-field label="Customer" horizontal>
+            <b-select v-model="form.customer" placeholder="Select a customer" required>
+              <option disabled value="" selected>Select a customer</option>
+              <option v-for="(customer, index) in customers" :key="index" :value="customer.vat">
+                {{ `#${customer.vat} | ${customer.name}` }}
+              </option>
+            </b-select>
           </b-field>
+
+          <b-field label="Policy" horizontal>
+            <b-select v-model="form.policy" placeholder="Select a policy" required>
+              <option disabled value="" selected>Select a policy</option>
+              <option v-for="(policy, index) in policies" :key="index" :value="policy.code">
+                {{ `#${policy.code} | ${capitalizeFirstLetter(policy.type)} | ${policy.insurerCompany}` }}
+              </option>
+            </b-select>
+          </b-field>
+
           <b-field label="Description" message="The description of your occurrence. Max 255 characters" horizontal>
             <b-input v-model="form.description" type="textarea" maxlength="255" required />
           </b-field>
+
           <hr />
+
           <b-field label="Files" horizontal>
             <file-picker v-model="form.files" type="is-info" />
           </b-field>
+
           <hr />
+
           <b-field horizontal>
             <b-field grouped>
               <div class="control">
@@ -46,16 +65,23 @@ export default defineComponent({
   data() {
     return {
       form: {
-        policy: '4241',
+        customer: '',
+        policy: '',
         description: 'blablabla',
         files: null,
       },
+      customers: [],
+      policies: [],
     }
   },
   computed: {
     hasFile() {
       return this.form.files != null
     },
+  },
+  created() {
+    this.$axios.$get(`/api/customers`).then((customers) => (this.customers = customers.data))
+    this.$axios.$get(`/api/policies`).then((policies) => (this.policies = policies))
   },
   methods: {
     formReset() {
@@ -69,7 +95,7 @@ export default defineComponent({
         return
       }
 
-      const promise = this.$axios.$post(`/api/customers/${this.$auth.user.vat}/occurrences`, {
+      const promise = this.$axios.$post(`/api/customers/${this.form.customer}/occurrences`, {
         description: this.form.description,
         policy: this.form.policy,
       })
@@ -94,6 +120,9 @@ export default defineComponent({
       if (errorMsg) this.$toast.error(errorMsg).goAway(3000)
 
       this.$toast.success('Occurrence created!').goAway(3000)
+    },
+    capitalizeFirstLetter(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
     },
   },
 })
