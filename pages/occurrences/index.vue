@@ -11,7 +11,6 @@
       <card-component class="has-table has-mobile-sort-spaced" title="Occurrences" icon="clipboard-list">
         <occurrences-table :occurrences="occurrences" />
       </card-component>
-
       <hr />
     </section>
   </div>

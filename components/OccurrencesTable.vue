@@ -1,10 +1,22 @@
 <template>
   <div>
-    <modal-box
-      :is-active="isModalActive"
+    <delete-modal-box
+      :is-active="isTrashModalActive"
       :trash-object-name="trashObject ? trashObject.name : null"
       @confirm="trashConfirm"
       @cancel="trashCancel"
+    />
+    <modal-box
+      :is-active="isApproveModalActive"
+      :title="'Approve this occurrence?'"
+      @confirm="approveConfirm"
+      @cancel="approveCancel"
+    />
+    <modal-box
+      :is-active="isRejectModalActive"
+      :title="'Reject this occurrence?'"
+      @confirm="rejectConfirm"
+      @cancel="rejectCancel"
     />
     <b-table :paginated="paginated" :per-page="perPage" :data="occurrences" default-sort="name" striped hoverable>
       <b-table-column v-slot="props" label="ID" field="id" sortable>
@@ -34,6 +46,12 @@
           <b-button v-if="canRemove" type="is-danger" size="is-small" @click.prevent="trashModalOpen(props.row)">
             <b-icon icon="trash-can" size="is-small" />
           </b-button>
+          <b-button v-if="canApprove" type="is-primary" size="is-small" @click.prevent="approveModalOpen(props.row)">
+            <b-icon icon="check" size="is-small" />
+          </b-button>
+          <b-button v-if="canReject" type="is-danger" size="is-small" @click.prevent="rejectModalOpen(props.row)">
+            <b-icon icon="close" size="is-small" />
+          </b-button>
         </div>
       </b-table-column>
     </b-table>
@@ -43,9 +61,10 @@
 <script>
 import { defineComponent } from 'vue'
 import ModalBox from '@/components/ModalBox.vue'
+import DeleteModalBox from '@/components/DeleteModalBox.vue'
 
 export default defineComponent({
-  components: { ModalBox },
+  components: { ModalBox, DeleteModalBox },
   props: {
     isEmpty: Boolean,
     perPage: {
@@ -63,8 +82,12 @@ export default defineComponent({
   },
   data() {
     return {
-      isModalActive: false,
+      isTrashModalActive: false,
       trashObject: null,
+      isApproveModalActive: false,
+      approveObject: null,
+      isRejectModalActive: false,
+      rejectObject: null,
     }
   },
   computed: {
@@ -87,10 +110,10 @@ export default defineComponent({
   methods: {
     trashModalOpen(obj) {
       this.trashObject = obj
-      this.isModalActive = true
+      this.isTrashModalActive = true
     },
     trashConfirm() {
-      this.isModalActive = false
+      this.isTrashModalActive = false
 
       this.$buefy.snackbar.open({
         message: 'Confirmed',
@@ -98,7 +121,37 @@ export default defineComponent({
       })
     },
     trashCancel() {
-      this.isModalActive = false
+      this.isTrashModalActive = false
+    },
+    approveModalOpen(obj) {
+      this.approveObject = obj
+      this.isApproveModalActive = true
+    },
+    approveConfirm() {
+      this.isApproveModalActive = false
+
+      this.$buefy.snackbar.open({
+        message: 'Occurrence has been approved',
+        queue: false,
+      })
+    },
+    approveCancel() {
+      this.isApproveModalActive = false
+    },
+    rejectModalOpen(obj) {
+      this.rejectObject = obj
+      this.isRejectModalActive = true
+    },
+    rejectConfirm() {
+      this.isRejectModalActive = false
+
+      this.$buefy.snackbar.open({
+        message: 'Occurrence has been rejected',
+        queue: false,
+      })
+    },
+    rejectCancel() {
+      this.isRejectModalActive = false
     },
   },
 })

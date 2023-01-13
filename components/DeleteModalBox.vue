@@ -7,12 +7,13 @@
       </header>
       <section class="modal-card-body">
         <p>
-          {{ title }}
+          This will permanently delete <b>{{ trashObjectName }}</b>
         </p>
+        <p>Action can not be undone.</p>
       </section>
       <footer class="modal-card-foot">
-        <b-button native-type="button" type="is-primary" outlined @click="confirm"> Confirm </b-button>
-        <b-button type="is-danger" @click="cancel"> Cancel </b-button>
+        <b-button native-type="button" type="is-danger" outlined @click="confirm"> Delete </b-button>
+        <b-button type="is-secondary" @click="cancel"> Cancel </b-button>
       </footer>
     </div>
   </b-modal>
@@ -22,10 +23,10 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'ModalBox',
+  name: 'DeleteModalBox',
   props: {
     isActive: Boolean,
-    title: {
+    trashObjectName: {
       type: String,
       default: null,
     },
