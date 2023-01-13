@@ -8,13 +8,19 @@
     />
     <modal-box
       :is-active="isApproveModalActive"
-      :title="'Approve this occurrence?'"
-      @confirm="approveConfirm"
+      title="Approve occurrence"
+      :body="`Are you sure you want to approve the occurrence #${occurrence?.id}?`"
+      confirm-text="Approve"
+      :object="occurrence"
+      @confirm="approveConfirm(occurrence)"
       @cancel="approveCancel"
     />
     <modal-box
       :is-active="isRejectModalActive"
-      :title="'Reject this occurrence?'"
+      title="'Reject occurrence"
+      :body="`Are you sure you want to reject the occurrence #${occurrence?.id}?`"
+      confirm-text="Reject"
+      :object="occurrence"
       @confirm="rejectConfirm"
       @cancel="rejectCancel"
     />
@@ -85,9 +91,8 @@ export default defineComponent({
       isTrashModalActive: false,
       trashObject: null,
       isApproveModalActive: false,
-      approveObject: null,
+      occurrence: null,
       isRejectModalActive: false,
-      rejectObject: null,
     }
   },
   computed: {
@@ -114,40 +119,36 @@ export default defineComponent({
     },
     trashConfirm() {
       this.isTrashModalActive = false
-
-      this.$buefy.snackbar.open({
-        message: 'Confirmed',
-        queue: false,
-      })
+      this.$toast.success('Occurrence deleted').goAway(3000)
     },
     trashCancel() {
       this.isTrashModalActive = false
     },
     approveModalOpen(obj) {
-      this.approveObject = obj
+      this.occurrence = obj
       this.isApproveModalActive = true
     },
-    approveConfirm() {
+    approveConfirm(obj) {
       this.isApproveModalActive = false
-
-      this.$buefy.snackbar.open({
-        message: 'Occurrence has been approved',
-        queue: false,
+      this.$axios.$patch(`/api/occurrences/${obj.id}/approve`).then(() => {
+        const index = this.occurrences.findIndex((occurrence) => occurrence.id === obj.id)
+        this.occurrences.splice(index, 1)
+        this.$toast.success(`Occurrence #${obj.id} approved`).goAway(3000)
       })
     },
     approveCancel() {
       this.isApproveModalActive = false
     },
     rejectModalOpen(obj) {
-      this.rejectObject = obj
+      this.occurrence = obj
       this.isRejectModalActive = true
     },
     rejectConfirm() {
       this.isRejectModalActive = false
-
-      this.$buefy.snackbar.open({
-        message: 'Occurrence has been rejected',
-        queue: false,
+      this.$axios.$patch(`/api/occurrences/${this.occurrence.id}/reject`).then(() => {
+        const index = this.occurrences.findIndex((occurrence) => occurrence.id === this.occurrence.id)
+        this.occurrences.splice(index, 1)
+        this.$toast.success(`Occurrence #${this.occurrence.id} rejected`).goAway(3000)
       })
     },
     rejectCancel() {

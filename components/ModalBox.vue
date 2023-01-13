@@ -2,17 +2,15 @@
   <b-modal :active.sync="isModalActive" has-modal-card>
     <div class="modal-card">
       <header class="modal-card-head">
-        <p class="modal-card-title">Confirm action</p>
+        <p class="modal-card-title">{{ title }}</p>
         <button type="button" class="delete" @click="cancel" />
       </header>
       <section class="modal-card-body">
-        <p>
-          {{ title }}
-        </p>
+        <p>{{ body }}</p>
       </section>
       <footer class="modal-card-foot">
-        <b-button native-type="button" type="is-primary" outlined @click="confirm"> Confirm </b-button>
-        <b-button type="is-danger" @click="cancel"> Cancel </b-button>
+        <b-button native-type="button" type="is-primary" @click="confirm"> {{ confirmText }} </b-button>
+        <b-button type="is-danger" outlined @click="cancel"> {{ cancelText }} </b-button>
       </footer>
     </div>
   </b-modal>
@@ -22,12 +20,27 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'ModalBox',
   props: {
     isActive: Boolean,
     title: {
       type: String,
-      default: null,
+      default: 'Confirm action',
+    },
+    body: {
+      type: String,
+      default: '',
+    },
+    confirmText: {
+      type: String,
+      default: 'Confirm',
+    },
+    cancelText: {
+      type: String,
+      default: 'Cancel',
+    },
+    object: {
+      type: Object,
+      default: () => ({}),
     },
   },
   emits: ['cancel', 'confirm'],

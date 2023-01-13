@@ -26,7 +26,7 @@ export default {
 
   data() {
     return {
-      vat: '289910323',
+      vat: '123123123',
       password: '123456',
     }
   },
