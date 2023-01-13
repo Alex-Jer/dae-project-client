@@ -5,7 +5,13 @@
       <card-component title="Create Occurrence" icon="ballot">
         <form @submit.prevent="formAction">
           <b-field label="Customer" horizontal>
-            <b-select v-model="form.customer" placeholder="Select a customer" required>
+            <b-select
+              v-model="form.customer"
+              placeholder="Select a customer"
+              :loading="customersLoading"
+              expanded
+              required
+            >
               <option disabled value="" selected>Select a customer</option>
               <option v-for="(customer, index) in customers" :key="index" :value="customer.vat">
                 {{ `#${customer.vat} | ${customer.name}` }}
@@ -14,7 +20,7 @@
           </b-field>
 
           <b-field label="Policy" horizontal>
-            <b-select v-model="form.policy" placeholder="Select a policy" required>
+            <b-select v-model="form.policy" placeholder="Select a policy" :loading="policiesLoading" expanded required>
               <option disabled value="" selected>Select a policy</option>
               <option v-for="(policy, index) in policies" :key="index" :value="policy.code">
                 {{ `#${policy.code} | ${capitalizeFirstLetter(policy.type)} | ${policy.insurerCompany}` }}
@@ -67,11 +73,13 @@ export default defineComponent({
       form: {
         customer: '',
         policy: '',
-        description: 'blablabla',
+        description: '',
         files: null,
       },
       customers: [],
       policies: [],
+      customersLoading: true,
+      policiesLoading: true,
     }
   },
   computed: {
@@ -80,11 +88,18 @@ export default defineComponent({
     },
   },
   created() {
-    this.$axios.$get(`/api/customers`).then((customers) => (this.customers = customers.data))
-    this.$axios.$get(`/api/policies`).then((policies) => (this.policies = policies))
+    this.$axios.$get(`/api/customers`).then((customers) => {
+      this.customers = customers.data
+      this.customersLoading = false
+    })
+    this.$axios.$get(`/api/policies`).then((policies) => {
+      this.policies = policies
+      this.policiesLoading = false
+    })
   },
   methods: {
     formReset() {
+      this.form.customer = ''
       this.form.policy = ''
       this.form.description = ''
       this.form.files = null
