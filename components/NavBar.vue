@@ -18,7 +18,7 @@
     </div>
     <div v-if="$auth.loggedIn" class="navbar-menu fadeIn animated faster" :class="{ 'is-active': isMenuActive }">
       <div class="navbar-end">
-        <nav-bar-menu class="has-divider has-user-avatar">
+        <nav-bar-menu class="has-divider">
           <div class="is-user-name">
             <span> {{ $auth?.user?.name }} </span>
           </div>

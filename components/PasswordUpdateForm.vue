@@ -1,41 +1,10 @@
 <template>
-  <card-component
-    title="Change Password"
-    icon="lock"
-  >
-    <form @submit.prevent="submit">
-      <b-field
-        horizontal
-        label="Current password"
-        message="Required. Your current password"
-      >
-        <b-input
-          v-model="form.password_current"
-          name="password_current"
-          type="password"
-          required
-          autcomplete="current-password"
-        />
+  <card-component title="Change Password" icon="lock">
+    <form @submit.prevent="formAction">
+      <b-field label="New password" message="Required. New password">
+        <b-input v-model="form.password" name="password" type="password" required autocomplete="new-password" />
       </b-field>
-      <hr>
-      <b-field
-        horizontal
-        label="New password"
-        message="Required. New password"
-      >
-        <b-input
-          v-model="form.password"
-          name="password"
-          type="password"
-          required
-          autocomplete="new-password"
-        />
-      </b-field>
-      <b-field
-        horizontal
-        label="Confirm password"
-        message="Required. New password one more time"
-      >
+      <b-field label="Confirm password" message="Required. New password one more time">
         <b-input
           v-model="form.password_confirmation"
           name="password_confirmation"
@@ -44,16 +13,10 @@
           autocomplete="new-password"
         />
       </b-field>
-      <hr>
-      <b-field horizontal>
+      <hr />
+      <b-field>
         <div class="control">
-          <b-button
-            native-type="submit"
-            type="is-info"
-            :loading="isLoading"
-          >
-            Submit
-          </b-button>
+          <b-button native-type="submit" type="is-info"> Submit </b-button>
         </div>
       </b-field>
     </form>
@@ -65,35 +28,42 @@ import { defineComponent } from 'vue'
 import CardComponent from '@/components/CardComponent.vue'
 
 export default defineComponent({
-  name: 'PasswordUpdateForm',
   components: {
-    CardComponent
+    CardComponent,
   },
-  data () {
+  data() {
     return {
-      isLoading: false,
       form: {
-        password_current: null,
-        password: null,
-        password_confirmation: null
-      }
+        password: '',
+        password_confirmation: '',
+      },
     }
   },
   methods: {
-    submit () {
-      this.isLoading = true
+    validateForm() {
+      if (this.form.password !== this.form.password_confirmation) {
+        this.$toast.error('New password and confirm password must match!').goAway(6000)
+        return false
+      }
+      return true
+    },
+    async formAction() {
+      if (!this.validateForm()) return
+      let errorMsg = ''
 
-      setTimeout(() => {
-        this.isLoading = false
+      await this.$axios
+        .$put(`/api/users/${this.$auth.user.vat}/password`, {
+          password: this.form.password,
+        })
+        .catch(() => (errorMsg = 'Error editing profile!'))
 
-        this.$buefy.snackbar.open(
-          {
-            message: 'Demo only',
-            queue: false
-          }
-        )
-      }, 750)
-    }
-  }
+      if (errorMsg) {
+        this.$toast.error(errorMsg).goAway(6000)
+        return
+      }
+
+      this.$toast.success('Profile updated!').goAway(6000)
+    },
+  },
 })
 </script>

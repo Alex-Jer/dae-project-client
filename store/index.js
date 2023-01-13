@@ -8,7 +8,6 @@ export const state = () => ({
   /* User */
   userName: null,
   userEmail: null,
-  userAvatar: null,
   userRole: null,
 
   /* NavBar */
@@ -38,9 +37,6 @@ export const mutations = {
     }
     if (payload.email) {
       state.userEmail = payload.email
-    }
-    if (payload.avatar) {
-      state.userAvatar = payload.avatar
     }
     if (payload.role) {
       state.userRole = payload.role
@@ -107,10 +103,7 @@ export const actions = {
   toggleFullPage({ commit }, payload) {
     commit('fullPage', payload)
 
-    document.documentElement.classList[!payload ? 'add' : 'remove'](
-      'has-aside-left',
-      'has-navbar-fixed-top'
-    )
+    document.documentElement.classList[!payload ? 'add' : 'remove']('has-aside-left', 'has-navbar-fixed-top')
   },
 
   fetch({ commit }, payload) {

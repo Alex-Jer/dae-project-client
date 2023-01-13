@@ -30,7 +30,6 @@ export default defineComponent({
     this.$store.commit('user', {
       name: this.$store.state.userName,
       email: this.$store.state.email,
-      avatar: 'https://avatars.dicebear.com/v2/gridy/John-Doe.svg',
     })
   },
   created() {},
