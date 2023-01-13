@@ -144,11 +144,15 @@ export default defineComponent({
     },
     approveConfirm(obj) {
       this.isApproveModalActive = false
-      this.$axios.$patch(`/api/occurrences/${obj.id}/approve`).then(() => {
-        const index = this.occurrences.findIndex((occurrence) => occurrence.id === obj.id)
-        this.occurrences.splice(index, 1)
-        this.$toast.success(`Occurrence #${obj.id} approved`).goAway(3000)
-      })
+      this.$axios
+        .$patch(`/api/occurrences/${obj.id}/approve`, {
+          expertVat: this.$auth.user.vat,
+        })
+        .then(() => {
+          const index = this.occurrences.findIndex((occurrence) => occurrence.id === obj.id)
+          this.occurrences.splice(index, 1)
+          this.$toast.success(`Occurrence #${obj.id} approved`).goAway(3000)
+        })
     },
     approveCancel() {
       this.isApproveModalActive = false
@@ -159,11 +163,15 @@ export default defineComponent({
     },
     rejectConfirm(obj) {
       this.isRejectModalActive = false
-      this.$axios.$patch(`/api/occurrences/${obj.id}/reject`).then(() => {
-        const index = this.occurrences.findIndex((occurrence) => occurrence.id === obj.id)
-        this.occurrences.splice(index, 1)
-        this.$toast.success(`Occurrence #${obj.id} rejected`).goAway(3000)
-      })
+      this.$axios
+        .$patch(`/api/occurrences/${obj.id}/reject`, {
+          expertVat: this.$auth.user.vat,
+        })
+        .then(() => {
+          const index = this.occurrences.findIndex((occurrence) => occurrence.id === obj.id)
+          this.occurrences.splice(index, 1)
+          this.$toast.success(`Occurrence #${obj.id} rejected`).goAway(3000)
+        })
     },
     rejectCancel() {
       this.isRejectModalActive = false
