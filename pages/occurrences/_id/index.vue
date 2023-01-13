@@ -96,6 +96,7 @@
 
       <hr />
     </section>
+    <b-loading v-model="isLoading" can-cancel is-full-page />
   </div>
 </template>
 
@@ -122,6 +123,7 @@ export default defineComponent({
       form: { service: '', newService: '' },
       isApproveModalActive: false,
       isRejectModalActive: false,
+      isLoading: true,
     }
   },
   computed: {
@@ -136,10 +138,6 @@ export default defineComponent({
     },
   },
   async created() {
-    this.$axios.$get(`/api/occurrences/${this.id}/documents`).then((documents) => {
-      if (documents) this.documents = documents
-    })
-
     await this.$axios.$get(`/api/occurrences/${this.id}`).then((occurrence) => {
       if (occurrence) this.occurrence = occurrence
     })
@@ -151,6 +149,12 @@ export default defineComponent({
     await this.$axios.$get(`/api/services/${this.policy.type}`).then((services) => {
       if (services) this.services = services
     })
+
+    await this.$axios.$get(`/api/occurrences/${this.id}/documents`).then((documents) => {
+      if (documents) this.documents = documents
+    })
+
+    this.isLoading = false
   },
   methods: {
     approveModalOpen(obj) {

@@ -16,7 +16,7 @@
       </card-component>
       <hr />
     </section>
-    <b-loading v-model="isLoading" is-full-page></b-loading>
+    <b-loading v-model="isLoading" can-cancel is-full-page />
   </div>
 </template>
 
