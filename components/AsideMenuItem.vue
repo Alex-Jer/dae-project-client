@@ -15,27 +15,14 @@
         :class="{ 'has-update-mark': item.updateMark }"
         custom-size="default"
       />
-      <span
-        v-if="item.label"
-        :class="{ 'menu-item-label': !!item.icon }"
-      >
+      <span v-if="item.label" :class="{ 'menu-item-label': !!item.icon }">
         {{ item.label }}
       </span>
-      <div
-        v-if="hasDropdown"
-        class="dropdown-icon"
-      >
-        <b-icon
-          :icon="dropdownIcon"
-          custom-size="default"
-        />
+      <div v-if="hasDropdown" class="dropdown-icon">
+        <b-icon :icon="dropdownIcon" custom-size="default" />
       </div>
     </component>
-    <aside-menu-list
-      v-if="hasDropdown"
-      :menu="item.menu"
-      is-submenu-list
-    />
+    <aside-menu-list v-if="hasDropdown" :menu="item.menu" is-submenu-list />
   </li>
 </template>
 
@@ -45,39 +32,39 @@ import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'AsideMenuItem',
   components: {
-    AsideMenuList: () => import('@/components/AsideMenuList.vue')
+    AsideMenuList: () => import('@/components/AsideMenuList.vue'),
   },
   props: {
     item: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   emits: ['menu-click'],
-  data () {
+  data() {
     return {
-      isDropdownActive: false
+      isDropdownActive: false,
     }
   },
   computed: {
-    componentIs () {
-      return this.item.to ? 'router-link' : 'a'
+    componentIs() {
+      return this.item.to ? 'nuxt-link' : 'a'
     },
-    hasDropdown () {
+    hasDropdown() {
       return !!this.item.menu
     },
-    dropdownIcon () {
+    dropdownIcon() {
       return this.isDropdownActive ? 'minus' : 'plus'
-    }
+    },
   },
   methods: {
-    menuClick () {
+    menuClick() {
       this.$emit('menu-click', this.item)
 
       if (this.hasDropdown) {
         this.isDropdownActive = !this.isDropdownActive
       }
-    }
-  }
+    },
+  },
 })
 </script>

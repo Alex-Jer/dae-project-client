@@ -24,14 +24,15 @@
           </div>
 
           <div slot="dropdown" class="navbar-dropdown">
-            <router-link to="/profile" class="navbar-item" exact-active-class="is-active">
+            <nuxt-link to="/profile" class="navbar-item" exact-active-class="is-active">
               <b-icon icon="account" custom-size="default" />
               <span>My Profile</span>
-            </router-link>
+            </nuxt-link>
           </div>
         </nav-bar-menu>
         <a class="navbar-item is-desktop-icon-only" title="Log out" @click.prevent="logout">
           <b-icon icon="logout" custom-size="default" />
+          <span>Log Out</span>
         </a>
       </div>
     </div>

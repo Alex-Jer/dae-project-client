@@ -2,10 +2,10 @@
   <div>
     <hero-bar>
       {{ getTitle }}
-      <router-link slot="right" to="occurrences/create" class="button is-info">
+      <nuxt-link slot="right" to="occurrences/create" class="button is-info">
         <b-icon icon="plus-circle" custom-size="default" />
         <span>New Occurrence</span>
-      </router-link>
+      </nuxt-link>
     </hero-bar>
     <section class="section is-main-section">
       <card-component class="has-table has-mobile-sort-spaced" title="Occurrences" icon="clipboard-list">
