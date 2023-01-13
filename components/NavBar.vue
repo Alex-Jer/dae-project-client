@@ -77,7 +77,7 @@ export default defineComponent({
       this.isMenuActive = !this.isMenuActive
     },
     logout() {
-      this.$toast.success('You have been logged out')
+      this.$toast.success('You have been logged out').goAway(2000)
       this.$auth.logout()
       this.$router.push('/')
     },
