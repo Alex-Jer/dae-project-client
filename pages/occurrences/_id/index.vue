@@ -132,7 +132,7 @@ export default defineComponent({
       return this.$auth.user.role === 'Expert'
     },
     canPickService() {
-      return this.$auth.user.role === 'Customer'
+      return this.$auth.user.role === 'Customer' && this.occurrence?.status === 'APPROVED'
     },
   },
   async created() {
