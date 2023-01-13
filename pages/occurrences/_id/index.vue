@@ -196,19 +196,31 @@ export default defineComponent({
         .$patch(`/api/occurrences/${obj.id}/service`, {
           id: this.form.service,
         })
-        .then(() => {
+        .then((msg) => {
           this.$router.push('/occurrences')
-          this.$toast.success(`Occurrence #${obj.id} in repair`).goAway(3000)
+          this.$toast.success(msg).goAway(6000)
+        })
+        .catch((err) => {
+          if (err.response?.data[0]?.reason) this.$toast.error(err.response.data[0].reason).goAway(6000)
+          else this.$toast.error(err.response?.data?.reason).goAway(6000)
         })
     },
     newService(obj) {
+      if (!this.form.newService) {
+        this.$toast.error('Please enter a service name').goAway(3000)
+        return
+      }
       this.$axios
         .$post(`/api/occurrences/${obj.id}/service`, {
           name: this.form.newService,
         })
-        .then(() => {
+        .then((msg) => {
           this.$router.push('/occurrences')
-          this.$toast.success(`Occurrence #${obj.id} in repair`).goAway(3000)
+          this.$toast.success(msg).goAway(6000)
+        })
+        .catch((err) => {
+          if (err.response?.data[0]?.reason) this.$toast.error(err.response.data[0].reason).goAway(6000)
+          else this.$toast.error(err.response?.data?.reason).goAway(6000)
         })
     },
     capitalizeFirstLetter(string) {
