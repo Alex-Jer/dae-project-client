@@ -20,7 +20,7 @@
       <div class="navbar-end">
         <nav-bar-menu class="has-divider has-user-avatar">
           <div class="is-user-name">
-            <span> {{ username }} </span>
+            <span> {{ $auth?.user?.name }} </span>
           </div>
 
           <div slot="dropdown" class="navbar-dropdown">
@@ -49,7 +49,6 @@ export default defineComponent({
   },
   data() {
     return {
-      username: this?.$auth?.user?.name || '',
       isMenuActive: false,
     }
   },
