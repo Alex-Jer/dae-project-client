@@ -29,6 +29,9 @@
         <b-field label="Policy Code" horizontal>
           <b-input :value="occurrence?.policy" disabled />
         </b-field>
+        <b-field label="Policy Type" horizontal>
+          <b-input :value="capitalizeFirstLetter(policy?.type)" disabled />
+        </b-field>
         <b-field label="Reference" horizontal>
           <b-input :value="id" disabled />
         </b-field>
@@ -40,6 +43,35 @@
         </b-field>
 
         <hr />
+
+        <div v-if="canPickService">
+          <b-field label="Service" horizontal>
+            <b-field>
+              <b-select v-model="form.service" placeholder="Select a service" expanded>
+                <option disabled value="" selected>Select a service</option>
+                <option v-for="(service, index) in services" :key="index" :value="service.id">
+                  {{ service.name }}
+                </option>
+              </b-select>
+            </b-field>
+            <b-field>
+              <div class="control">
+                <b-button type="is-primary" @click.prevent="repair(occurrence)">Repair</b-button>
+              </div>
+            </b-field>
+          </b-field>
+
+          <b-field label="New Service" horizontal>
+            <b-field>
+              <b-input v-model="form.newService" :value="occurrence?.description" />
+            </b-field>
+            <b-field>
+              <div class="control">
+                <b-button type="is-info" @click.prevent="newService(occurrence)">Suggest New Service</b-button>
+              </div>
+            </b-field>
+          </b-field>
+        </div>
 
         <b-field v-if="canApproveReject" label="Actions" horizontal>
           <b-field grouped>
@@ -83,8 +115,11 @@ export default defineComponent({
   },
   data() {
     return {
-      documents: [],
       occurrence: {},
+      policy: {},
+      documents: [],
+      services: [],
+      form: { service: '', newService: '' },
       isApproveModalActive: false,
       isRejectModalActive: false,
     }
@@ -96,14 +131,25 @@ export default defineComponent({
     canApproveReject() {
       return this.$auth.user.role === 'Expert'
     },
+    canPickService() {
+      return this.$auth.user.role === 'Customer'
+    },
   },
-  created() {
-    this.$axios.$get(`/api/occurrences/${this.id}`).then((occurrence) => {
+  async created() {
+    this.$axios.$get(`/api/occurrences/${this.id}/documents`).then((documents) => {
+      if (documents) this.documents = documents
+    })
+
+    await this.$axios.$get(`/api/occurrences/${this.id}`).then((occurrence) => {
       if (occurrence) this.occurrence = occurrence
     })
 
-    this.$axios.$get(`/api/occurrences/${this.id}/documents`).then((documents) => {
-      if (documents) this.documents = documents
+    await this.$axios.$get(`/api/policies/${this.occurrence?.policy}`).then((policy) => {
+      if (policy) this.policy = policy
+    })
+
+    await this.$axios.$get(`/api/services/${this.policy.type}`).then((services) => {
+      if (services) this.services = services
     })
   },
   methods: {
@@ -144,6 +190,30 @@ export default defineComponent({
     },
     rejectCancel() {
       this.isRejectModalActive = false
+    },
+    repair(obj) {
+      this.$axios
+        .$patch(`/api/occurrences/${obj.id}/service`, {
+          id: this.form.service,
+        })
+        .then(() => {
+          this.$router.push('/occurrences')
+          this.$toast.success(`Occurrence #${obj.id} in repair`).goAway(3000)
+        })
+    },
+    newService(obj) {
+      this.$axios
+        .$post(`/api/occurrences/${obj.id}/service`, {
+          name: this.form.newService,
+        })
+        .then(() => {
+          this.$router.push('/occurrences')
+          this.$toast.success(`Occurrence #${obj.id} in repair`).goAway(3000)
+        })
+    },
+    capitalizeFirstLetter(string) {
+      if (!string) return ''
+      return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
     },
   },
 })
