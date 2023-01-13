@@ -11,7 +11,7 @@
             <b-input v-model="form.description" type="textarea" maxlength="255" required />
           </b-field>
           <hr />
-          <b-field label="Add Files" horizontal>
+          <b-field label="Add Documents" horizontal>
             <file-picker v-model="form.files" type="is-info" />
           </b-field>
           <hr />
@@ -74,28 +74,54 @@ export default defineComponent({
       this.form.description = this.occurrence.description
       this.form.files = null
     },
-    formAction() {
-      // const promise = this.$axios.$put(`/api/customers/${this.$auth.user.vat}/occurrences/${this.id}`, {
-      //   description: this.form.description,
-      //   policy: this.form.policy,
-      // })
-      // let errorMsg = ''
-      // if (this.hasFile)
-      //   promise.then((occurrence) => {
-      //     this.form.files.forEach((file) => {
-      //       const fd = new FormData()
-      //       fd.append('file', file)
-      //       this.$axios
-      //         .post(`/api/occurrences/${occurrence.id}/documents`, fd, {
-      //           headers: { 'Content-Type': 'multipart/form-data' },
-      //         })
-      //         .catch(() => (errorMsg = 'File upload failed!'))
-      //     })
-      //   })
-      // promise.then(() => this.$router.push('/occurrences'))
-      // promise.catch(() => (errorMsg = 'Error editing occurrence!'))
-      // if (errorMsg) this.$toast.error(errorMsg).goAway(3000)
-      // this.$toast.success('Occurrence edited!').goAway(3000)
+    async formAction() {
+      let errorMsg = ''
+      let occurrence = {}
+
+      await this.$axios
+        .$put(`/api/occurrences/${this.id}`, {
+          description: this.form.description,
+          policy: this.form.policy,
+        })
+        .then((occ) => (occurrence = occ))
+        .catch(() => (errorMsg = 'Error editing occurrence!'))
+
+      if (errorMsg) {
+        this.$toast.error(errorMsg).goAway(6000)
+        return
+      }
+
+      if (!this.hasFile) {
+        this.$toast.success('Occurrence edited!').goAway(6000)
+        this.$router.push('/occurrences')
+        return
+      }
+
+      for (const file of this.form.files) {
+        const fd = new FormData()
+        fd.append('file', file)
+        await this.$axios
+          .post(`/api/occurrences/${occurrence.id}/documents`, fd, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+          })
+          .catch(() => (errorMsg = 'Error editing occurrence!'))
+      }
+
+      if (errorMsg) {
+        this.$toast.error(errorMsg).goAway(6000)
+        return
+      }
+
+      if (this.form.policy !== this.occurrence.policy || this.form.description !== this.occurrence.description) {
+        this.$toast.success('Occurrence edited and documents uploaded!').goAway(6000)
+        this.$router.push('/occurrences')
+        return
+      }
+
+      if (this.hasFile) {
+        this.$toast.success('Documents uploaded!').goAway(6000)
+        this.$router.push('/occurrences')
+      }
     },
   },
 })
