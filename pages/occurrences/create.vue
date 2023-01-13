@@ -137,6 +137,7 @@ export default defineComponent({
       this.$toast.success('Occurrence created!').goAway(3000)
     },
     capitalizeFirstLetter(string) {
+      if (!string) return ''
       return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
     },
   },

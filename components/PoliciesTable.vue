@@ -10,7 +10,7 @@
       </b-table-column>
 
       <b-table-column v-slot="props" label="Type" field="type" sortable>
-        {{ props.row.type }}
+        {{ capitalizeFirstLetter(props.row.type) }}
       </b-table-column>
 
       <b-table-column v-slot="props" custom-key="actions" cell-class="is-actions-cell">
@@ -46,6 +46,12 @@ export default defineComponent({
   computed: {
     paginated() {
       return this.policies?.length > this.perPage
+    },
+  },
+  methods: {
+    capitalizeFirstLetter(string) {
+      if (!string) return ''
+      return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
     },
   },
 })

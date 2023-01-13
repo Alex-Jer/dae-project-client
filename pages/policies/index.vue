@@ -5,9 +5,9 @@
       <card-component class="has-table has-mobile-sort-spaced" title="Policies" icon="clipboard-list">
         <policies-table :policies="policies" />
       </card-component>
-
       <hr />
     </section>
+    <b-loading v-model="isLoading" can-cancel is-full-page></b-loading>
   </div>
 </template>
 
@@ -26,6 +26,7 @@ export default defineComponent({
   data() {
     return {
       policies: [],
+      isLoading: true,
     }
   },
   created() {
@@ -33,6 +34,7 @@ export default defineComponent({
       .$get(this.$auth.user.role === 'Customer' ? `/api/customers/${this.$auth.user.vat}/policies` : `/api/policies`)
       .then((policies) => {
         this.policies = policies
+        this.isLoading = false
       })
   },
 })
