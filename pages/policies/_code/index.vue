@@ -14,9 +14,9 @@
       <card-component class="has-table has-mobile-sort-spaced" title="Occurrences" icon="clipboard-list">
         <occurrences-table :occurrences="occurrences" :show-policy="false" />
       </card-component>
-
       <hr />
     </section>
+    <b-loading v-model="isLoading" is-full-page></b-loading>
   </div>
 </template>
 
@@ -36,6 +36,7 @@ export default defineComponent({
     return {
       occurrences: [],
       policy: {},
+      isLoading: true,
     }
   },
   computed: {
@@ -53,13 +54,14 @@ export default defineComponent({
       return ''
     },
   },
-  created() {
-    this.$axios.$get(`/api/policies/${this.code}`).then((policy) => {
+  async created() {
+    await this.$axios.$get(`/api/policies/${this.code}`).then((policy) => {
       if (policy) this.policy = policy
     })
-    this.$axios.$get(`/api/policies/${this.code}/occurrences`).then((occurrences) => {
+    await this.$axios.$get(`/api/policies/${this.code}/occurrences`).then((occurrences) => {
       this.occurrences = occurrences
     })
+    this.isLoading = false
   },
 })
 </script>
