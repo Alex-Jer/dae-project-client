@@ -95,7 +95,7 @@ export default defineComponent({
       return this.occurrences?.length > this.perPage
     },
     canEdit() {
-      return this.$auth.user.role === 'Admin'
+      return this.$auth.user.role === 'Administrator'
     },
     canRemove() {
       return this.canEdit
