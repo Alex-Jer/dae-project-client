@@ -12,7 +12,7 @@
         <b-field label="Covers" horizontal> {{ formatCovers ?? 'unknown' }} </b-field>
       </card-component>
       <card-component class="has-table has-mobile-sort-spaced" title="Occurrences" icon="clipboard-list">
-        <occurrences-table :occurrences="occurrences" :show-policy="false" :show-admin-actions="false" />
+        <occurrences-table :occurrences="occurrences" :show-policy="false" />
       </card-component>
 
       <hr />

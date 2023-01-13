@@ -23,15 +23,15 @@
         {{ props.row.status }}
       </b-table-column>
 
-      <b-table-column v-if="showAdminActions" v-slot="props" custom-key="actions" cell-class="is-actions-cell">
+      <b-table-column v-slot="props" custom-key="actions" cell-class="is-actions-cell">
         <div class="buttons is-right no-wrap">
           <nuxt-link :to="`/occurrences/${props.row.id}`" class="button is-small is-info">
             <b-icon icon="eye" size="is-small" />
           </nuxt-link>
-          <nuxt-link :to="`/occurrences/${props.row.id}/edit`" class="button is-small is-primary">
+          <nuxt-link v-if="canEdit" :to="`/occurrences/${props.row.id}/edit`" class="button is-small is-primary">
             <b-icon icon="pencil" size="is-small" />
           </nuxt-link>
-          <b-button type="is-danger" size="is-small" @click.prevent="trashModalOpen(props.row)">
+          <b-button v-if="canRemove" type="is-danger" size="is-small" @click.prevent="trashModalOpen(props.row)">
             <b-icon icon="trash-can" size="is-small" />
           </b-button>
         </div>
@@ -60,10 +60,6 @@ export default defineComponent({
       type: Boolean,
       default: true,
     },
-    showAdminActions: {
-      type: Boolean,
-      default: true,
-    },
   },
   data() {
     return {
@@ -74,6 +70,18 @@ export default defineComponent({
   computed: {
     paginated() {
       return this.occurrences?.length > this.perPage
+    },
+    canEdit() {
+      return this.$auth.user.role === 'Admin'
+    },
+    canRemove() {
+      return this.canEdit
+    },
+    canApprove() {
+      return this.$auth.user.role === 'Expert'
+    },
+    canReject() {
+      return this.canApprove
     },
   },
   methods: {

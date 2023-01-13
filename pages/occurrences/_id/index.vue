@@ -26,7 +26,7 @@
       </card-component>-->
 
       <card-component class="has-table has-mobile-sort-spaced" title="Documents" icon="clipboard-list">
-        <documents-table :documents="documents" :occurrence-id="occurrence?.id" :show-admin-actions="false" />
+        <documents-table :documents="documents" :occurrence-id="occurrence?.id" />
       </card-component>
 
       <hr />
