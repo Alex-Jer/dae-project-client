@@ -9,7 +9,7 @@
         <p>{{ body }}</p>
       </section>
       <footer class="modal-card-foot">
-        <b-button native-type="button" type="is-primary" @click="confirm"> {{ confirmText }} </b-button>
+        <b-button native-type="button" type="is-info" @click="confirm"> {{ confirmText }} </b-button>
         <b-button type="is-danger" outlined @click="cancel"> {{ cancelText }} </b-button>
       </footer>
     </div>

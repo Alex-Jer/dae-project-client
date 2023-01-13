@@ -17,7 +17,7 @@
     />
     <modal-box
       :is-active="isRejectModalActive"
-      title="'Reject occurrence"
+      title="Reject occurrence"
       :body="`Are you sure you want to reject the occurrence #${occurrence?.id}?`"
       confirm-text="Reject"
       :object="occurrence"
