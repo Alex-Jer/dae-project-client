@@ -33,6 +33,10 @@
         {{ props.row.id }}
       </b-table-column>
 
+      <b-table-column v-if="showCustomer" v-slot="props" label="Customer VAT" field="customer" sortable>
+        {{ props.row.customerVat }}
+      </b-table-column>
+
       <b-table-column v-if="showPolicy" v-slot="props" label="Policy" field="policy" sortable>
         {{ props.row.policy }}
       </b-table-column>
@@ -85,6 +89,10 @@ export default defineComponent({
       default: () => [],
     },
     showPolicy: {
+      type: Boolean,
+      default: true,
+    },
+    showCustomer: {
       type: Boolean,
       default: true,
     },

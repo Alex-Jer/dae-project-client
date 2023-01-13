@@ -37,33 +37,31 @@ export default defineComponent({
     getTitle() {
       switch (this.$auth.user.role) {
         case 'Customer':
-          return `My Occurrences`
+          return 'My Occurrences'
         case 'Repairer':
-          return `Approved Occurrences`
+          return 'Approved Occurrences'
         case 'Expert':
-          return `Pending Occurrencces`
+          return 'Pending Occurrencces'
         default:
-          return `All Occurrences`
+          return 'All Occurrences'
       }
     },
 
     getUrl() {
       switch (this.$auth.user.role) {
-        case 'Customer':
-          return `/api/customers/${this.$auth.user.vat}/occurrences`
+        case 'Administrator':
+          return '/api/occurrences'
         case 'Repairer':
-          return `/api/occurrences/approved`
+          return '/api/occurrences/approved'
         case 'Expert':
-          return `/api/occurrences/pending`
+          return '/api/occurrences/pending'
         default:
-          return `/api/occurrences`
+          return `/api/customers/${this.$auth.user.vat}/occurrences`
       }
     },
   },
   created() {
-    this.$axios.$get(this.getUrl).then((occurrences) => {
-      this.occurrences = occurrences
-    })
+    this.$axios.$get(this.getUrl).then((occurrences) => (this.occurrences = occurrences))
   },
 })
 </script>
