@@ -5,16 +5,26 @@
       <card-component :title="`Editing Occurrence #${$route.params.id}`" icon="ballot">
         <form @submit.prevent="formAction">
           <b-field label="Policy" horizontal>
-            <b-input v-model="form.policy" placeholder="e.g. 65B-510" required />
+            <b-select v-model="form.policy" placeholder="Select a policy" :loading="policiesLoading" expanded required>
+              <option disabled value="" selected>Select a policy</option>
+              <option v-for="(policy, index) in policies" :key="index" :value="policy.code">
+                {{ `#${policy.code} | ${capitalizeFirstLetter(policy.type)} | ${policy.insurerCompany}` }}
+              </option>
+            </b-select>
           </b-field>
+
           <b-field label="Description" message="The description of your occurrence. Max 255 characters" horizontal>
             <b-input v-model="form.description" type="textarea" maxlength="255" required />
           </b-field>
+
           <hr />
+
           <b-field label="Add Documents" horizontal>
             <file-picker v-model="form.files" type="is-info" />
           </b-field>
+
           <hr />
+
           <b-field horizontal>
             <b-field grouped>
               <div class="control">
@@ -47,10 +57,12 @@ export default defineComponent({
     return {
       occurrence: {},
       form: {
-        policy: '4241',
-        description: 'blablabla',
+        policy: '',
+        description: '',
         files: null,
       },
+      policies: [],
+      policiesLoading: true,
     }
   },
   computed: {
@@ -66,6 +78,10 @@ export default defineComponent({
       this.occurrence = occurrence
       this.form.policy = occurrence.policy
       this.form.description = occurrence.description
+    })
+    this.$axios.$get(`/api/policies`).then((policies) => {
+      this.policies = policies
+      this.policiesLoading = false
     })
   },
   methods: {
@@ -122,6 +138,9 @@ export default defineComponent({
         this.$toast.success('Documents uploaded!').goAway(6000)
         this.$router.push('/occurrences')
       }
+    },
+    capitalizeFirstLetter(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
     },
   },
 })
