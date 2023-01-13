@@ -79,7 +79,6 @@ import ModalBox from '@/components/ModalBox.vue'
 export default defineComponent({
   components: { ModalBox },
   props: {
-    isEmpty: Boolean,
     perPage: {
       type: Number,
       default: 10,
@@ -99,9 +98,9 @@ export default defineComponent({
   },
   data() {
     return {
+      occurrence: null,
       isDeleteModalActive: false,
       isApproveModalActive: false,
-      occurrence: null,
       isRejectModalActive: false,
     }
   },

@@ -1,16 +1,16 @@
 /* We'll need some initial vars to use here */
-@import "node_modules/bulma/sass/utilities/initial-variables";
+@import 'node_modules/bulma/sass/utilities/initial-variables';
 
 /* Base: Size  */
 $size-base: 1rem;
 $default-padding: $size-base * 1.5;
 
 /* Default font */
-$family-sans-serif: "Nunito", sans-serif;
+$family-sans-serif: 'Nunito', sans-serif;
 
 /* Base color */
 $base-color: #2e323a;
-$base-color-light: rgba(24, 28, 33, .06);
+$base-color-light: rgba(24, 28, 33, 0.06);
 
 /* App Scrollbars */
 $app-scrollbar-track: #f8f8f8;
@@ -18,7 +18,7 @@ $app-scrollbar-thumb: $grey-light;
 $app-scrollbar-hover: $grey;
 
 /* General overrides */
-$primary: $turquoise;
+$primary: #00b096;
 $body-background-color: #f8f8f8;
 $link: $blue;
 $link-visited: $purple;
@@ -28,14 +28,14 @@ $hr-height: 1px;
 /* NavBar: specifics */
 $navbar-input-color: $grey-darker;
 $navbar-input-placeholder-color: $grey-lighter;
-$navbar-box-shadow: 0 1px 0 rgba(24, 28, 33, .04);
-$navbar-divider-border: 1px solid rgba($grey-lighter, .25);
-$navbar-item-h-padding: $default-padding * .75;
+$navbar-box-shadow: 0 1px 0 rgba(24, 28, 33, 0.04);
+$navbar-divider-border: 1px solid rgba($grey-lighter, 0.25);
+$navbar-item-h-padding: $default-padding * 0.75;
 $navbar-avatar-size: 1.75rem;
 
 /* Aside: Bulma override */
 $menu-item-radius: 0;
-$menu-list-link-padding: $size-base * .5 0;
+$menu-list-link-padding: $size-base * 0.5 0;
 $menu-label-color: lighten($base-color, 25%);
 $menu-item-color: lighten($base-color, 45%);
 $menu-item-hover-color: $white;
@@ -47,7 +47,7 @@ $menu-item-active-background-color: darken($base-color, 2.5%);
 $aside-width: $size-base * 14;
 $aside-mobile-width: $size-base * 15;
 $aside-icon-width: $size-base * 3;
-$aside-submenu-font-size: $size-base * .95;
+$aside-submenu-font-size: $size-base * 0.95;
 $aside-box-shadow: none;
 $aside-background-color: $base-color;
 $aside-tools-background-color: darken($aside-background-color, 10%);
@@ -94,12 +94,12 @@ $modal-card-width-mobile: 90vw;
 $modal-card-foot-background-color: $white-ter;
 
 /* Notification: Bulma override */
-$notification-padding: $default-padding * .75;
+$notification-padding: $default-padding * 0.75;
 $notification-padding-ltr: $notification-padding;
 
 /* Footer: Bulma override */
 $footer-background-color: $white;
-$footer-padding: $default-padding * .33 $default-padding;
+$footer-padding: $default-padding * 0.33 $default-padding;
 
 /* Footer: specifics */
 $footer-logo-height: $size-base * 2;
@@ -108,5 +108,5 @@ $footer-logo-height: $size-base * 2;
 $progress-bar-background-color: $grey-lighter;
 
 /* Icon: specifics */
-$icon-update-mark-size: $size-base * .5;
+$icon-update-mark-size: $size-base * 0.5;
 $icon-update-mark-color: $yellow;
