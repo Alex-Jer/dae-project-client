@@ -1,10 +1,14 @@
 <template>
   <div>
-    <delete-modal-box
-      :is-active="isTrashModalActive"
-      :trash-object-name="trashObject ? trashObject.name : null"
-      @confirm="trashConfirm"
-      @cancel="trashCancel"
+    <modal-box
+      is-danger
+      :is-active="isDeleteModalActive"
+      title="Delete occurrence"
+      :body="`Are you sure you want to delete the occurrence #${occurrence?.id}?`"
+      confirm-text="Delete"
+      :object="occurrence"
+      @confirm="deleteConfirm(occurrence)"
+      @cancel="deleteCancel"
     />
     <modal-box
       :is-active="isApproveModalActive"
@@ -21,7 +25,7 @@
       :body="`Are you sure you want to reject the occurrence #${occurrence?.id}?`"
       confirm-text="Reject"
       :object="occurrence"
-      @confirm="rejectConfirm"
+      @confirm="rejectConfirm(occurrence)"
       @cancel="rejectCancel"
     />
     <b-table :paginated="paginated" :per-page="perPage" :data="occurrences" default-sort="id" striped hoverable>
@@ -49,7 +53,7 @@
           <nuxt-link v-if="canEdit" :to="`/occurrences/${props.row.id}/edit`" class="button is-small is-primary">
             <b-icon icon="pencil" size="is-small" />
           </nuxt-link>
-          <b-button v-if="canRemove" type="is-danger" size="is-small" @click.prevent="trashModalOpen(props.row)">
+          <b-button v-if="canRemove" type="is-danger" size="is-small" @click.prevent="deleteModalOpen(props.row)">
             <b-icon icon="trash-can" size="is-small" />
           </b-button>
           <b-button v-if="canApprove" type="is-primary" size="is-small" @click.prevent="approveModalOpen(props.row)">
@@ -67,10 +71,9 @@
 <script>
 import { defineComponent } from 'vue'
 import ModalBox from '@/components/ModalBox.vue'
-import DeleteModalBox from '@/components/DeleteModalBox.vue'
 
 export default defineComponent({
-  components: { ModalBox, DeleteModalBox },
+  components: { ModalBox },
   props: {
     isEmpty: Boolean,
     perPage: {
@@ -88,8 +91,7 @@ export default defineComponent({
   },
   data() {
     return {
-      isTrashModalActive: false,
-      trashObject: null,
+      isDeleteModalActive: false,
       isApproveModalActive: false,
       occurrence: null,
       isRejectModalActive: false,
@@ -113,16 +115,20 @@ export default defineComponent({
     },
   },
   methods: {
-    trashModalOpen(obj) {
-      this.trashObject = obj
-      this.isTrashModalActive = true
+    deleteModalOpen(obj) {
+      this.occurrence = obj
+      this.isDeleteModalActive = true
     },
-    trashConfirm() {
-      this.isTrashModalActive = false
-      this.$toast.success('Occurrence deleted').goAway(3000)
+    deleteConfirm(obj) {
+      this.isDeleteModalActive = false
+      this.$axios.$delete(`/api/occurrences/${obj.id}`).then(() => {
+        const index = this.occurrences.findIndex((occurrence) => occurrence.id === obj.id)
+        this.occurrences.splice(index, 1)
+        this.$toast.success(`Occurrence #${obj.id} deleted`).goAway(3000)
+      })
     },
-    trashCancel() {
-      this.isTrashModalActive = false
+    deleteCancel() {
+      this.isDeleteModalActive = false
     },
     approveModalOpen(obj) {
       this.occurrence = obj
@@ -143,12 +149,12 @@ export default defineComponent({
       this.occurrence = obj
       this.isRejectModalActive = true
     },
-    rejectConfirm() {
+    rejectConfirm(obj) {
       this.isRejectModalActive = false
-      this.$axios.$patch(`/api/occurrences/${this.occurrence.id}/reject`).then(() => {
-        const index = this.occurrences.findIndex((occurrence) => occurrence.id === this.occurrence.id)
+      this.$axios.$patch(`/api/occurrences/${obj.id}/reject`).then(() => {
+        const index = this.occurrences.findIndex((occurrence) => occurrence.id === obj.id)
         this.occurrences.splice(index, 1)
-        this.$toast.success(`Occurrence #${this.occurrence.id} rejected`).goAway(3000)
+        this.$toast.success(`Occurrence #${obj.id} rejected`).goAway(3000)
       })
     },
     rejectCancel() {

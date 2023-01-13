@@ -9,8 +9,10 @@
         <p>{{ body }}</p>
       </section>
       <footer class="modal-card-foot">
-        <b-button native-type="button" type="is-info" @click="confirm"> {{ confirmText }} </b-button>
-        <b-button type="is-danger" outlined @click="cancel"> {{ cancelText }} </b-button>
+        <b-button native-type="button" :type="isDanger ? 'is-danger' : 'is-info'" @click="confirm">{{
+          confirmText
+        }}</b-button>
+        <b-button :type="isDanger ? 'is-secondary' : 'is-danger'" outlined @click="cancel">{{ cancelText }}</b-button>
       </footer>
     </div>
   </b-modal>
@@ -22,6 +24,10 @@ import { defineComponent } from 'vue'
 export default defineComponent({
   props: {
     isActive: Boolean,
+    isDanger: {
+      type: Boolean,
+      default: false,
+    },
     title: {
       type: String,
       default: 'Confirm action',

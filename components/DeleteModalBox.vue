@@ -2,18 +2,15 @@
   <b-modal :active.sync="isModalActive" has-modal-card>
     <div class="modal-card">
       <header class="modal-card-head">
-        <p class="modal-card-title">Confirm action</p>
+        <p class="modal-card-title">{{ title }}</p>
         <button type="button" class="delete" @click="cancel" />
       </header>
       <section class="modal-card-body">
-        <p>
-          This will permanently delete <b>{{ trashObjectName }}</b>
-        </p>
-        <p>Action can not be undone.</p>
+        <p>{{ body }}</p>
       </section>
       <footer class="modal-card-foot">
-        <b-button native-type="button" type="is-danger" outlined @click="confirm"> Delete </b-button>
-        <b-button type="is-secondary" @click="cancel"> Cancel </b-button>
+        <b-button native-type="button" type="is-danger" outlined @click="confirm">{{ confirmText }}</b-button>
+        <b-button type="is-secondary" @click="cancel">{{ cancelText }}</b-button>
       </footer>
     </div>
   </b-modal>
