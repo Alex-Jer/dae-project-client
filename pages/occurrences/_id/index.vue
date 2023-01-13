@@ -85,11 +85,6 @@
         </b-field>
       </card-component>
 
-      <!--<card-component class="" title="Documents" icon="clipboard-list">
-        V-IF Perito some actions (LATER, ISSUE TA NO TRELLO)
-        https://trello.com/c/igdk9rsa/20-perito-valida-ocorrências
-      </card-component>-->
-
       <card-component class="has-table has-mobile-sort-spaced" title="Documents" icon="clipboard-list">
         <documents-table :documents="documents" :occurrence-id="occurrence?.id" />
       </card-component>
