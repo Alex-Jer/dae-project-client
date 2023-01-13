@@ -2,7 +2,7 @@
   <div>
     <hero-bar>
       {{ getTitle }}
-      <nuxt-link slot="right" to="occurrences/create" class="button is-info">
+      <nuxt-link v-if="$auth.user.role == 'Customer'" slot="right" to="occurrences/create" class="button is-info">
         <b-icon icon="plus-circle" custom-size="default" />
         <span>New Occurrence</span>
       </nuxt-link>
@@ -39,7 +39,7 @@ export default defineComponent({
         case 'Customer':
           return 'My Occurrences'
         case 'Repairer':
-          return 'Approved Occurrences'
+          return 'Occurrences To Repair'
         case 'Expert':
           return 'Pending Occurrencces'
         default:
@@ -52,7 +52,7 @@ export default defineComponent({
         case 'Administrator':
           return '/api/occurrences'
         case 'Repairer':
-          return '/api/occurrences/approved'
+          return '/api/occurrences/repairing'
         case 'Expert':
           return '/api/occurrences/pending'
         default:
