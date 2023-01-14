@@ -158,7 +158,7 @@ export default defineComponent({
         .then(() => {
           const index = this.occurrences.findIndex((occurrence) => occurrence.id === obj.id)
           this.occurrences.splice(index, 1)
-          this.$toast.success(`Occurrence #${obj.id} approved`).goAway(3000)
+          this.$toast.success(`Occurrence #${obj.id} approved. Customer notified.`).goAway(6000)
 
           this.$axios.$post(`/api/users/${obj.customerVat}/email/send`, {
             subject: 'Occurrence Approved',
@@ -182,7 +182,7 @@ export default defineComponent({
         .then(() => {
           const index = this.occurrences.findIndex((occurrence) => occurrence.id === obj.id)
           this.occurrences.splice(index, 1)
-          this.$toast.success(`Occurrence #${obj.id} rejected`).goAway(3000)
+          this.$toast.success(`Occurrence #${obj.id} rejected. Customer notified.`).goAway(6000)
 
           this.$axios.$post(`/api/users/${obj.customerVat}/email/send`, {
             subject: 'Occurrence Rejected',

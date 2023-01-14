@@ -191,7 +191,7 @@ export default defineComponent({
         .then(() => {
           this.occurrence.status = 'APPROVED'
           this.$router.push('/occurrences')
-          this.$toast.success(`Occurrence #${obj.id} approved`).goAway(3000)
+          this.$toast.success(`Occurrence #${obj.id} approved. Customer notified.`).goAway(6000)
 
           this.$axios.$post(`/api/users/${obj.customerVat}/email/send`, {
             subject: 'Occurrence Approved',
@@ -215,7 +215,7 @@ export default defineComponent({
         .then(() => {
           this.occurrence.status = 'REJECTED'
           this.$router.push('/occurrences')
-          this.$toast.success(`Occurrence #${obj.id} rejected`).goAway(3000)
+          this.$toast.success(`Occurrence #${obj.id} rejected. Customer notified.`).goAway(6000)
 
           this.$axios.$post(`/api/users/${obj.customerVat}/email/send`, {
             subject: 'Occurrence Rejected',
@@ -240,9 +240,9 @@ export default defineComponent({
             body: `Your occurrence (ref: #${obj.id}) has been assigned to a repairer. You will be notified once the repair is done.`,
           })
 
-          this.$axios.$post(`/api/users/${this.form.service}/email/send`, {
+          this.$axios.$post(`/api/services/${this.form.service}/email/send`, {
             subject: 'Occurrence Repairing',
-            body: `You have been assigned to repair an occurrence (ref: #${obj.id}).`,
+            body: `Customer 'VAT: ${obj.customerVat}' has requested a repair for the occurrence ref: #${obj.id}.`,
           })
         })
         .catch((err) => {
