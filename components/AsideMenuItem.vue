@@ -59,15 +59,15 @@ export default defineComponent({
   methods: {
     menuClick() {
       this.$emit('menu-click', this.item)
-
-      if (this.hasDropdown) {
-        this.isDropdownActive = !this.isDropdownActive
-      }
+      if (this.hasDropdown) this.isDropdownActive = !this.isDropdownActive
     },
     canView(label) {
       if (label === 'Policies')
         return this.$auth?.user?.role === 'Administrator' || this.$auth?.user?.role === 'Customer'
       if (label.includes('Import')) return this.$auth?.user?.role === 'Administrator'
+      if (label === 'Login') return !this.$auth?.loggedIn
+      if (!this.$auth?.user) return label === 'Login'
+
       return true
     },
   },
