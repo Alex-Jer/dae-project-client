@@ -42,15 +42,6 @@ export default {
 
       promise.then(() => {
         this.$toast.success('You are now logged in.').goAway(3000)
-
-        console.log(this.$auth.user)
-
-        // check if the user this.$auth.user object is set
-
-        // Role-based redirecion
-        // eg: IF role is 'Student' THEN it will redirect to: /students/{username}
-        // WARN: be aware that if you don't have pages for each role, it will not work
-        // this.$router.push(`/${this.$auth.user.role.toLowerCase()}s/` + this.vat)
         this.$router.push('/occurrences')
       })
 
