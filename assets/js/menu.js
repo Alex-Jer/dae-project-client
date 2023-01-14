@@ -2,6 +2,11 @@ export default [
   'Navigation',
   [
     {
+      to: '/auth/login',
+      label: 'Login',
+      icon: 'login',
+    },
+    {
       to: '/policies',
       label: 'Policies',
       icon: 'table',
