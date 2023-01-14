@@ -67,6 +67,7 @@ export default defineComponent({
     canView(label) {
       if (label === 'Policies')
         return this.$auth?.user?.role === 'Administrator' || this.$auth?.user?.role === 'Customer'
+      if (label.includes('Import')) return this.$auth?.user?.role === 'Administrator'
       return true
     },
   },
