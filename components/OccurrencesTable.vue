@@ -85,7 +85,7 @@ export default defineComponent({
   props: {
     perPage: {
       type: Number,
-      default: 10,
+      default: 8,
     },
     occurrences: {
       type: Array,

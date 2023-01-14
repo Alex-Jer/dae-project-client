@@ -7,10 +7,23 @@
         <span>New Occurrence</span>
       </nuxt-link>
     </hero-bar>
+
     <section class="section is-main-section">
       <card-component class="has-table has-mobile-sort-spaced" title="Occurrences" icon="clipboard-list">
         <occurrences-table :occurrences="occurrences" />
       </card-component>
+
+      <div v-if="!isCustomer" :class="occurrences.length >= 8 ? 'filter' : ''">
+        <b-field label="Filter by Customer">
+          <b-select placeholder="Select a customer" @input="filterByCustomer($event)">
+            <option value="" selected>All</option>
+            <option v-for="(customer, index) in customers" :key="index" :value="customer.vat">
+              {{ `#${customer.vat} | ${customer.name}` }}
+            </option>
+          </b-select>
+        </b-field>
+      </div>
+
       <hr />
     </section>
   </div>
@@ -31,6 +44,7 @@ export default defineComponent({
   data() {
     return {
       occurrences: [],
+      customers: [],
     }
   },
   computed: {
@@ -46,7 +60,6 @@ export default defineComponent({
           return 'All Occurrences'
       }
     },
-
     getUrl() {
       switch (this.$auth.user.role) {
         case 'Administrator':
@@ -59,9 +72,36 @@ export default defineComponent({
           return `/api/customers/${this.$auth.user.vat}/occurrences`
       }
     },
+    isCustomer() {
+      return this.$auth.user.role === 'Customer'
+    },
   },
   created() {
-    this.$axios.$get(this.getUrl).then((occurrences) => (this.occurrences = occurrences))
+    this.getOccurrences()
+    if (!this.isCustomer) this.getCustomers()
+  },
+  methods: {
+    getCustomers() {
+      this.$axios.$get(`/api/customers`).then((customers) => {
+        this.customers = customers.data
+      })
+    },
+    getOccurrences() {
+      this.$axios.$get(this.getUrl).then((occurrences) => (this.occurrences = occurrences))
+    },
+    filterByCustomer(vat) {
+      if (vat === '') return this.getOccurrences()
+      this.$axios.$get(`/api/customers/${vat}/occurrences`).then((occurrences) => (this.occurrences = occurrences))
+    },
   },
 })
 </script>
+
+<style>
+@media screen and (min-width: 768px) {
+  .filter {
+    margin-top: -5.5rem;
+    position: relative;
+  }
+}
+</style>
