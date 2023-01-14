@@ -4,21 +4,6 @@
     <section class="section is-main-section">
       <card-component title="Create Occurrence" icon="ballot">
         <form @submit.prevent="formAction">
-          <b-field v-if="!isCustomer" label="Customer" horizontal>
-            <b-select
-              v-model="form.customer"
-              placeholder="Select a customer"
-              :loading="customersLoading"
-              expanded
-              required
-            >
-              <option disabled value="" selected>Select a customer</option>
-              <option v-for="(customer, index) in customers" :key="index" :value="customer.vat">
-                {{ `#${customer.vat} | ${customer.name}` }}
-              </option>
-            </b-select>
-          </b-field>
-
           <b-field label="Policy" horizontal>
             <b-select v-model="form.policy" placeholder="Select a policy" :loading="policiesLoading" expanded required>
               <option disabled value="" selected>Select a policy</option>
@@ -76,9 +61,7 @@ export default defineComponent({
         description: '',
         files: null,
       },
-      customers: [],
       policies: [],
-      customersLoading: true,
       policiesLoading: true,
     }
   },
@@ -91,10 +74,6 @@ export default defineComponent({
     },
   },
   created() {
-    this.$axios.$get(`/api/customers`).then((customers) => {
-      this.customers = customers.data
-      this.customersLoading = false
-    })
     if (this.isCustomer) {
       this.form.customer = this.$auth.user.vat
       this.getPolicies()
@@ -111,7 +90,6 @@ export default defineComponent({
       this.form.customer = ''
       this.form.policy = ''
       this.form.description = ''
-      this.form.files = null
     },
     formAction() {
       if (!this.hasFile) {
