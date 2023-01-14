@@ -238,7 +238,7 @@ export default defineComponent({
     },
     async solve(obj) {
       if (this.form.files.length === 0) {
-        this.$toast.error('You must upload at least one document!').goAway(6000)
+        this.$toast.error('You must upload at least one document that proves the repair').goAway(6000)
         return
       }
 
@@ -251,7 +251,7 @@ export default defineComponent({
           .post(`/api/occurrences/${obj.id}/documents`, fd, {
             headers: { 'Content-Type': 'multipart/form-data' },
           })
-          .catch(() => (errorMsg = 'Error editing occurrence!'))
+          .catch(() => (errorMsg = 'Error uploading files!'))
       }
 
       if (errorMsg) {
@@ -266,6 +266,11 @@ export default defineComponent({
         .then((msg) => {
           this.$router.push('/occurrences')
           this.$toast.success(msg).goAway(6000)
+
+          this.$axios.$post(`/api/customers/${obj.customerVat}/email/send`, {
+            subject: 'Occurrence Repaired',
+            body: `Your occurrence (ref: #${obj.id}) has been repaired.`,
+          })
         })
         .catch((err) => {
           if (err.response?.data[0]?.reason) this.$toast.error(err.response.data[0].reason).goAway(6000)
