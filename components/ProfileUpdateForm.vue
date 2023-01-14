@@ -58,6 +58,8 @@ export default defineComponent({
         return
       }
 
+      this.$auth.fetchUser()
+
       this.$toast.success('Profile updated!').goAway(6000)
     },
   },

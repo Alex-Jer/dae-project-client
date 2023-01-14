@@ -67,7 +67,6 @@ export default defineComponent({
       if (label.includes('Import')) return this.$auth?.user?.role === 'Administrator'
       if (label === 'Login') return !this.$auth?.loggedIn
       if (!this.$auth?.user) return label === 'Login'
-
       return true
     },
   },
