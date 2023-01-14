@@ -1,5 +1,5 @@
 <template>
-  <li :class="{ 'is-active': isDropdownActive }">
+  <li v-if="canView(item.label)" :class="{ 'is-active': isDropdownActive }">
     <component
       :is="componentIs"
       :to="item.to"
@@ -30,7 +30,6 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'AsideMenuItem',
   components: {
     AsideMenuList: () => import('@/components/AsideMenuList.vue'),
   },
@@ -64,6 +63,11 @@ export default defineComponent({
       if (this.hasDropdown) {
         this.isDropdownActive = !this.isDropdownActive
       }
+    },
+    canView(label) {
+      if (label === 'Policies')
+        return this.$auth?.user?.role === 'Administrator' || this.$auth?.user?.role === 'Customer'
+      return true
     },
   },
 })
