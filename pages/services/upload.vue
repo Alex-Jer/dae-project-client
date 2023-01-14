@@ -60,8 +60,12 @@ export default defineComponent({
           .post(`/api/services/upload`, fd, {
             headers: { 'Content-Type': 'multipart/form-data' },
           })
-          .then(() => {
-            this.$toast.success('Services uploaded successfully!').goAway(6000)
+          .then((data) => {
+            if (data.data.success === 0) {
+              this.$toast.error(data.data.message).goAway(8000)
+            } else {
+              this.$toast.success(data.data.message).goAway(8000)
+            }
           })
           .catch(() => {
             this.$toast.error('Error uploading services!').goAway(6000)

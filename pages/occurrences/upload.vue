@@ -61,8 +61,12 @@ export default defineComponent({
             headers: { 'Content-Type': 'multipart/form-data' },
           })
           .then((data) => {
-            this.$toast.success('Those occurrences have been uploaded!').goAway(6000)
-            this.$router.push('/occurrences')
+            if (data.data.success === 0) {
+              this.$toast.error(data.data.message).goAway(8000)
+            } else {
+              this.$toast.success(data.data.message).goAway(8000)
+              this.$router.push('/occurrences')
+            }
           })
           .catch(() => {
             this.$toast.error('Unknown error uploading occurrences!').goAway(6000)
