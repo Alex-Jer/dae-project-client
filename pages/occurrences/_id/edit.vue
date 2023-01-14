@@ -4,6 +4,10 @@
     <section class="section is-main-section">
       <card-component :title="`Editing Occurrence #${$route.params.id}`" icon="ballot">
         <form @submit.prevent="formAction">
+          <b-field label="Customer's VAT" horizontal>
+            <b-input v-model="form.customerVat" disabled />
+          </b-field>
+
           <b-field label="Policy" horizontal>
             <b-select v-model="form.policy" placeholder="Select a policy" :loading="policiesLoading" expanded required>
               <option disabled value="" selected>Select a policy</option>
@@ -57,6 +61,7 @@ export default defineComponent({
     return {
       occurrence: {},
       form: {
+        customerVat: '',
         policy: '',
         description: '',
         files: null,
@@ -74,17 +79,25 @@ export default defineComponent({
     },
   },
   created() {
-    this.$axios.$get(`/api/occurrences/${this.id}`).then((occurrence) => {
-      this.occurrence = occurrence
-      this.form.policy = occurrence.policy
-      this.form.description = occurrence.description
-    })
-    this.$axios.$get(`/api/policies`).then((policies) => {
-      this.policies = policies
-      this.policiesLoading = false
-    })
+    this.$axios
+      .$get(`/api/occurrences/${this.id}`)
+      .then((occurrence) => {
+        this.occurrence = occurrence
+        this.form.customerVat = occurrence.customerVat
+        this.form.policy = occurrence.policy
+        this.form.description = occurrence.description
+      })
+      .then(() => {
+        this.getPolicies()
+      })
   },
   methods: {
+    getPolicies() {
+      this.$axios.$get(`/api/customers/${this.form.customerVat}/policies`).then((policies) => {
+        this.policies = policies
+        this.policiesLoading = false
+      })
+    },
     formReset() {
       this.form.policy = this.occurrence.policy
       this.form.description = this.occurrence.description

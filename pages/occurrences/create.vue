@@ -4,7 +4,7 @@
     <section class="section is-main-section">
       <card-component title="Create Occurrence" icon="ballot">
         <form @submit.prevent="formAction">
-          <b-field label="Customer" horizontal>
+          <b-field v-if="!isCustomer" label="Customer" horizontal>
             <b-select
               v-model="form.customer"
               placeholder="Select a customer"
@@ -86,18 +86,27 @@ export default defineComponent({
     hasFile() {
       return this.form.files != null
     },
+    isCustomer() {
+      return this.$auth.user.role === 'Customer'
+    },
   },
   created() {
     this.$axios.$get(`/api/customers`).then((customers) => {
       this.customers = customers.data
       this.customersLoading = false
     })
-    this.$axios.$get(`/api/policies`).then((policies) => {
-      this.policies = policies
-      this.policiesLoading = false
-    })
+    if (this.isCustomer) {
+      this.form.customer = this.$auth.user.vat
+      this.getPolicies()
+    }
   },
   methods: {
+    getPolicies() {
+      this.$axios.$get(`/api/customers/${this.form.customer}/policies`).then((policies) => {
+        this.policies = policies
+        this.policiesLoading = false
+      })
+    },
     formReset() {
       this.form.customer = ''
       this.form.policy = ''
