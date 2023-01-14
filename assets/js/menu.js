@@ -20,6 +20,11 @@ export default [
       icon: 'table',
     },
     {
+      to: '/occurrences/upload',
+      label: 'Load Occurrences',
+      icon: 'upload',
+    },
+    {
       label: 'Submenus',
       subLabel: 'Submenus Example',
       icon: 'view-list',
