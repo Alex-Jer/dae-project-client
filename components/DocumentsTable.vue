@@ -17,6 +17,10 @@
           </b-button>
         </div>
       </b-table-column>
+
+      <template #empty>
+        <div class="has-text-centered">No documents were added</div>
+      </template>
     </b-table>
   </div>
 </template>

@@ -68,6 +68,10 @@
           </b-button>
         </div>
       </b-table-column>
+
+      <template #empty>
+        <div class="has-text-centered">No occurrences registered</div>
+      </template>
     </b-table>
   </div>
 </template>
