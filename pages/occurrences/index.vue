@@ -133,7 +133,7 @@ export default defineComponent({
 @media screen and (min-width: 768px) {
   .filter {
     margin-top: -5.5rem;
-    position: relative;
+    position: absolute;
   }
 }
 </style>
