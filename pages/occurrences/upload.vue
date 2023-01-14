@@ -60,12 +60,11 @@ export default defineComponent({
           .post(`/api/occurrences/upload`, fd, {
             headers: { 'Content-Type': 'multipart/form-data' },
           })
-          .then((data) => {
-            this.$toast.success('Those occurrences have been uploaded!').goAway(6000)
-            this.$router.push('/occurrences')
+          .then(() => {
+            this.$toast.success('Occurrences uploaded successfully!').goAway(6000)
           })
           .catch(() => {
-            this.$toast.error('Unknown error uploading occurrences!').goAway(6000)
+            this.$toast.error('Error uploading occurrences!').goAway(6000)
           })
       }
     },
