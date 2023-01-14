@@ -13,7 +13,7 @@
         <occurrences-table :occurrences="occurrences" />
       </card-component>
 
-      <div v-if="isAdministrator" :class="occurrences.length >= 8 ? 'filter' : ''">
+      <div v-if="isAdministrator" :class="occurrences.length > 8 ? 'filter' : ''">
         <b-field label="Filter by Customer">
           <b-select placeholder="Select a customer" @input="filterByCustomer($event)">
             <option value="" selected>All</option>
@@ -24,7 +24,7 @@
         </b-field>
       </div>
 
-      <div v-if="isCustomer" :class="occurrences.length >= 8 ? 'filter' : ''">
+      <div v-if="isCustomer" :class="occurrences.length > 8 ? 'filter' : ''">
         <b-field label="Filter by Status">
           <b-select placeholder="Select a status" @input="filterByStatus($event)">
             <option value="" selected>All</option>

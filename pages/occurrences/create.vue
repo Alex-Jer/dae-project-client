@@ -56,12 +56,12 @@ export default defineComponent({
   data() {
     return {
       form: {
-        customer: '',
         policy: '',
         description: '',
         files: null,
       },
       policies: [],
+      vat: '',
       policiesLoading: true,
     }
   },
@@ -75,19 +75,18 @@ export default defineComponent({
   },
   created() {
     if (this.isCustomer) {
-      this.form.customer = this.$auth.user.vat
+      this.vat = this.$auth.user.vat
       this.getPolicies()
     }
   },
   methods: {
     getPolicies() {
-      this.$axios.$get(`/api/customers/${this.form.customer}/policies`).then((policies) => {
+      this.$axios.$get(`/api/customers/${this.vat}/policies`).then((policies) => {
         this.policies = policies
         this.policiesLoading = false
       })
     },
     formReset() {
-      this.form.customer = ''
       this.form.policy = ''
       this.form.description = ''
     },
@@ -97,7 +96,7 @@ export default defineComponent({
         return
       }
 
-      const promise = this.$axios.$post(`/api/customers/${this.form.customer}/occurrences`, {
+      const promise = this.$axios.$post(`/api/customers/${this.vat}/occurrences`, {
         description: this.form.description,
         policy: this.form.policy,
       })
