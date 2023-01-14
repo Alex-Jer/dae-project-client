@@ -187,6 +187,11 @@ export default defineComponent({
           this.occurrence.status = 'APPROVED'
           this.$router.push('/occurrences')
           this.$toast.success(`Occurrence #${obj.id} approved`).goAway(3000)
+
+          this.$axios.$post(`/api/customers/${obj.customerVat}/email/send`, {
+            subject: 'Occurrence Approved',
+            body: `Your occurrence (ref: #${obj.id}) has been approved by an expert. You can now pick a service to repair the damage.`,
+          })
         })
     },
     approveCancel() {
@@ -206,6 +211,11 @@ export default defineComponent({
           this.occurrence.status = 'REJECTED'
           this.$router.push('/occurrences')
           this.$toast.success(`Occurrence #${obj.id} rejected`).goAway(3000)
+
+          this.$axios.$post(`/api/customers/${obj.customerVat}/email/send`, {
+            subject: 'Occurrence Rejected',
+            body: `Your occurrence (ref: #${obj.id}) has been rejected by an expert. You can create a new occurrence if you wish.`,
+          })
         })
     },
     rejectCancel() {

@@ -155,6 +155,11 @@ export default defineComponent({
           const index = this.occurrences.findIndex((occurrence) => occurrence.id === obj.id)
           this.occurrences.splice(index, 1)
           this.$toast.success(`Occurrence #${obj.id} approved`).goAway(3000)
+
+          this.$axios.$post(`/api/customers/${obj.customerVat}/email/send`, {
+            subject: 'Occurrence Approved',
+            body: `Your occurrence (ref: #${obj.id}) has been approved by an expert. You can now pick a service to repair the damage.`,
+          })
         })
     },
     approveCancel() {
@@ -174,6 +179,11 @@ export default defineComponent({
           const index = this.occurrences.findIndex((occurrence) => occurrence.id === obj.id)
           this.occurrences.splice(index, 1)
           this.$toast.success(`Occurrence #${obj.id} rejected`).goAway(3000)
+
+          this.$axios.$post(`/api/customers/${obj.customerVat}/email/send`, {
+            subject: 'Occurrence Rejected',
+            body: `Your occurrence (ref: #${obj.id}) has been rejected by an expert. Please contact us for more information.`,
+          })
         })
     },
     rejectCancel() {
