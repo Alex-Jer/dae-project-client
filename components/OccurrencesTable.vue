@@ -34,7 +34,7 @@
         {{ props.row.id }}
       </b-table-column>
 
-      <b-table-column v-if="showCustomer" v-slot="props" label="Customer VAT" field="customer" sortable>
+      <b-table-column v-if="showCustomer && !isCustomer" v-slot="props" label="Customer VAT" field="customer" sortable>
         {{ props.row.customerVat }}
       </b-table-column>
 
@@ -125,6 +125,9 @@ export default defineComponent({
     canReject() {
       return this.canApprove
     },
+    isCustomer() {
+      return this.$auth.user.role === 'Customer'
+    },
   },
   methods: {
     deleteModalOpen(obj) {
@@ -157,7 +160,7 @@ export default defineComponent({
           this.occurrences.splice(index, 1)
           this.$toast.success(`Occurrence #${obj.id} approved`).goAway(3000)
 
-          this.$axios.$post(`/api/customers/${obj.customerVat}/email/send`, {
+          this.$axios.$post(`/api/users/${obj.customerVat}/email/send`, {
             subject: 'Occurrence Approved',
             body: `Your occurrence (ref: #${obj.id}) has been approved by an expert. You can now pick a service to repair the damage.`,
           })
@@ -181,7 +184,7 @@ export default defineComponent({
           this.occurrences.splice(index, 1)
           this.$toast.success(`Occurrence #${obj.id} rejected`).goAway(3000)
 
-          this.$axios.$post(`/api/customers/${obj.customerVat}/email/send`, {
+          this.$axios.$post(`/api/users/${obj.customerVat}/email/send`, {
             subject: 'Occurrence Rejected',
             body: `Your occurrence (ref: #${obj.id}) has been rejected by an expert. Please contact us for more information.`,
           })

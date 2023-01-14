@@ -47,7 +47,7 @@ export default defineComponent({
       let errorMsg = ''
 
       await this.$axios
-        .$put(`/api/users/${this.$auth.user.vat}`, {
+        .$put(`/api/users/me`, {
           name: this.form.name,
           email: this.form.email,
         })

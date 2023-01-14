@@ -52,7 +52,7 @@ export default defineComponent({
       let errorMsg = ''
 
       await this.$axios
-        .$put(`/api/users/${this.$auth.user.vat}/password`, {
+        .$put(`/api/users/me/password`, {
           password: this.form.password,
         })
         .catch(() => (errorMsg = 'Error editing profile!'))

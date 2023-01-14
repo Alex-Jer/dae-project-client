@@ -13,7 +13,7 @@
         <occurrences-table :occurrences="occurrences" />
       </card-component>
 
-      <div v-if="!isCustomer" :class="occurrences.length >= 8 ? 'filter' : ''">
+      <div v-if="isAdministrator" :class="occurrences.length >= 8 ? 'filter' : ''">
         <b-field label="Filter by Customer">
           <b-select placeholder="Select a customer" @input="filterByCustomer($event)">
             <option value="" selected>All</option>
@@ -86,6 +86,9 @@ export default defineComponent({
     },
     isCustomer() {
       return this.$auth.user.role === 'Customer'
+    },
+    isAdministrator() {
+      return this.$auth.user.role === 'Administrator'
     },
   },
   created() {
