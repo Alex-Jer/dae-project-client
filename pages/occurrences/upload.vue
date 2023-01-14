@@ -69,7 +69,7 @@ export default defineComponent({
             }
           })
           .catch(() => {
-            this.$toast.error('Unknown error uploading occurrences!').goAway(6000)
+            this.$toast.error('Error uploading occurrences!').goAway(6000)
           })
       }
     },
