@@ -26,14 +26,14 @@
 
     <section class="section is-main-section">
       <card-component title="Details" icon="ballot">
+        <b-field label="Reference" horizontal>
+          <b-input :value="id" disabled />
+        </b-field>
         <b-field label="Policy Code" horizontal>
           <b-input :value="occurrence?.policy" disabled />
         </b-field>
         <b-field label="Policy Type" horizontal>
           <b-input :value="capitalizeFirstLetter(policy?.type)" disabled />
-        </b-field>
-        <b-field label="Reference" horizontal>
-          <b-input :value="id" disabled />
         </b-field>
         <b-field label="Status" horizontal>
           <b-input :value="occurrence?.status" disabled />
@@ -74,7 +74,7 @@
         </div>
 
         <b-field v-if="canApproveReject" label="Actions" horizontal>
-          <b-field grouped>
+          <b-field>
             <div class="control">
               <b-button type="is-primary" @click.prevent="approveModalOpen(occurrence)">Approve Occurrence</b-button>
             </div>
@@ -83,6 +83,20 @@
             </div>
           </b-field>
         </b-field>
+
+        <div v-if="canSolve">
+          <b-field label="Proof" horizontal>
+            <file-picker v-model="form.files" type="is-info" />
+          </b-field>
+
+          <b-field horizontal>
+            <b-field>
+              <div class="control">
+                <b-button type="is-primary" @click.prevent="solve(occurrence)">Solve Occurrence</b-button>
+              </div>
+            </b-field>
+          </b-field>
+        </div>
       </card-component>
 
       <card-component class="has-table has-mobile-sort-spaced" title="Documents" icon="clipboard-list">
@@ -111,11 +125,15 @@ export default defineComponent({
   },
   data() {
     return {
+      form: {
+        service: '',
+        newService: '',
+        files: [],
+      },
       occurrence: {},
       policy: {},
       documents: [],
       services: [],
-      form: { service: '', newService: '' },
       isApproveModalActive: false,
       isRejectModalActive: false,
       isLoading: true,
@@ -126,10 +144,13 @@ export default defineComponent({
       return this.$route.params.id
     },
     canApproveReject() {
-      return this.$auth.user.role === 'Expert'
+      return this.$auth.user.role === 'Expert' && this.occurrence?.status === 'PENDING'
     },
     canPickService() {
       return this.$auth.user.role === 'Customer' && this.occurrence?.status === 'APPROVED'
+    },
+    canSolve() {
+      return this.$auth.user.role === 'Repairer' && this.occurrence?.status === 'REPAIRING'
     },
   },
   async created() {
@@ -194,6 +215,42 @@ export default defineComponent({
       this.$axios
         .$patch(`/api/occurrences/${obj.id}/service`, {
           id: this.form.service,
+        })
+        .then((msg) => {
+          this.$router.push('/occurrences')
+          this.$toast.success(msg).goAway(6000)
+        })
+        .catch((err) => {
+          if (err.response?.data[0]?.reason) this.$toast.error(err.response.data[0].reason).goAway(6000)
+          else this.$toast.error(err.response?.data?.reason).goAway(6000)
+        })
+    },
+    async solve(obj) {
+      if (this.form.files.length === 0) {
+        this.$toast.error('You must upload at least one document!').goAway(6000)
+        return
+      }
+
+      let errorMsg = ''
+
+      for (const file of this.form.files) {
+        const fd = new FormData()
+        fd.append('file', file)
+        await this.$axios
+          .post(`/api/occurrences/${obj.id}/documents`, fd, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+          })
+          .catch(() => (errorMsg = 'Error editing occurrence!'))
+      }
+
+      if (errorMsg) {
+        this.$toast.error(errorMsg).goAway(6000)
+        return
+      }
+
+      this.$axios
+        .$patch(`/api/occurrences/${obj.id}/solve`, {
+          repairerVat: this.$auth.user.vat,
         })
         .then((msg) => {
           this.$router.push('/occurrences')
