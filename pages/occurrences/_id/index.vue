@@ -240,10 +240,10 @@ export default defineComponent({
             body: `Your occurrence (ref: #${obj.id}) has been assigned to a repairer. You will be notified once the repair is done.`,
           })
 
-          // this.$axios.$post(`/api/repairers/${obj.repairerVat}/email/send`, {
-          //   subject: 'Occurrence Repairing',
-          //   body: `You have been assigned to repair an occurrence (ref: #${obj.id}).`,
-          // })
+          this.$axios.$post(`/api/services/${this.form.service}/email/send`, {
+            subject: 'Occurrence Repairing',
+            body: `You have been assigned to repair an occurrence (ref: #${obj.id}).`,
+          })
         })
         .catch((err) => {
           if (err.response?.data[0]?.reason) this.$toast.error(err.response.data[0].reason).goAway(6000)
