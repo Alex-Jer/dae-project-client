@@ -24,6 +24,17 @@
         </b-field>
       </div>
 
+      <div v-if="isCustomer" :class="occurrences.length >= 8 ? 'filter' : ''">
+        <b-field label="Filter by Status">
+          <b-select placeholder="Select a status" @input="filterByStatus($event)">
+            <option value="" selected>All</option>
+            <option v-for="(status, index) in statuses" :key="index" :value="status">
+              {{ capitalizeFirstLetter(status) }}
+            </option>
+          </b-select>
+        </b-field>
+      </div>
+
       <hr />
     </section>
   </div>
@@ -45,6 +56,7 @@ export default defineComponent({
     return {
       occurrences: [],
       customers: [],
+      statuses: [],
     }
   },
   computed: {
@@ -79,6 +91,7 @@ export default defineComponent({
   created() {
     this.getOccurrences()
     if (!this.isCustomer) this.getCustomers()
+    if (this.isCustomer) this.getStatuses()
   },
   methods: {
     getCustomers() {
@@ -89,9 +102,25 @@ export default defineComponent({
     getOccurrences() {
       this.$axios.$get(this.getUrl).then((occurrences) => (this.occurrences = occurrences))
     },
+    getStatuses() {
+      this.$axios.$get(`/api/occurrences/status`).then((statuses) => {
+        statuses = statuses.map((status) => status.status)
+        this.statuses = statuses
+      })
+    },
     filterByCustomer(vat) {
       if (vat === '') return this.getOccurrences()
       this.$axios.$get(`/api/customers/${vat}/occurrences`).then((occurrences) => (this.occurrences = occurrences))
+    },
+    filterByStatus(status) {
+      if (status === '') return this.getOccurrences()
+      this.$axios
+        .$get(`/api/customers/${this.$auth.user.vat}/occurrences/status/${status}`)
+        .then((occurrences) => (this.occurrences = occurrences))
+    },
+    capitalizeFirstLetter(string) {
+      if (!string) return ''
+      return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
     },
   },
 })
