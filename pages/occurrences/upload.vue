@@ -1,16 +1,16 @@
 <template>
   <div>
-    <hero-bar> Load Occurrences from CSV </hero-bar>
+    <hero-bar> Import Occurrences from CSV </hero-bar>
     <section class="section is-main-section">
-      <card-component title="Editing Occurrence" icon="ballot">
+      <card-component title="Import Occurrences" icon="upload">
         <form @submit.prevent="formAction">
-          <b-field label="Customer's VAT" horizontal>
+          <!--<b-field label="Customer's VAT" horizontal>
             <b-input v-model="form.customerVat" disabled />
           </b-field>
 
-          <hr />
+          <hr />-->
 
-          <b-field label="Add Documents" horizontal>
+          <b-field label="Add CSV Files" horizontal>
             <file-picker v-model="form.files" type="is-info" />
           </b-field>
 
@@ -47,7 +47,6 @@ export default defineComponent({
   data() {
     return {
       form: {
-        customerVat: '',
         files: null,
       },
     }

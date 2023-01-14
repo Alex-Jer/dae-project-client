@@ -21,7 +21,7 @@ export default [
     },
     {
       to: '/occurrences/upload',
-      label: 'Load Occurrences',
+      label: 'Import Occurrences',
       icon: 'upload',
     },
     {
