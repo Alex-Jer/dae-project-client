@@ -57,9 +57,13 @@
             </b-field>
             <b-field>
               <div class="control">
-                <b-button type="is-primary" @click.prevent="repair(occurrence)">Repair</b-button>
+                <b-button type="is-primary" @click.prevent="requestRepair(occurrence)">Request Repair</b-button>
               </div>
             </b-field>
+          </b-field>
+
+          <b-field label="or" horizontal>
+            <b-field />
           </b-field>
 
           <b-field label="New Service" horizontal>
@@ -222,7 +226,7 @@ export default defineComponent({
     rejectCancel() {
       this.isRejectModalActive = false
     },
-    repair(obj) {
+    requestRepair(obj) {
       this.$axios
         .$patch(`/api/occurrences/${obj.id}/service`, {
           id: this.form.service,
@@ -230,6 +234,16 @@ export default defineComponent({
         .then((msg) => {
           this.$router.push('/occurrences')
           this.$toast.success(msg).goAway(6000)
+
+          this.$axios.$post(`/api/customers/${obj.customerVat}/email/send`, {
+            subject: 'Occurrence Repairing',
+            body: `Your occurrence (ref: #${obj.id}) has been assigned to a repairer. You will be notified once the repair is done.`,
+          })
+
+          // this.$axios.$post(`/api/repairers/${obj.repairerVat}/email/send`, {
+          //   subject: 'Occurrence Repairing',
+          //   body: `You have been assigned to repair an occurrence (ref: #${obj.id}).`,
+          // })
         })
         .catch((err) => {
           if (err.response?.data[0]?.reason) this.$toast.error(err.response.data[0].reason).goAway(6000)
@@ -289,6 +303,11 @@ export default defineComponent({
         .then((msg) => {
           this.$router.push('/occurrences')
           this.$toast.success(msg).goAway(6000)
+
+          this.$axios.$post(`/api/customers/${obj.customerVat}/email/send`, {
+            subject: 'Occurrence Repairing',
+            body: `Your occurrence (ref: #${obj.id}) has been assigned to a repairer. You will be notified once the repair is done.`,
+          })
         })
         .catch((err) => {
           if (err.response?.data[0]?.reason) this.$toast.error(err.response.data[0].reason).goAway(6000)
