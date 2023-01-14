@@ -6,7 +6,7 @@
         <form @submit.prevent="formAction">
           <!--<b-field label="Customer's VAT" horizontal>
             <b-input v-model="form.customerVat" disabled />
-          </b-field>
+          </b-field> METER AQUI ALGO?
 
           <hr />-->
 
@@ -17,14 +17,9 @@
           <hr />
 
           <b-field horizontal>
-            <b-field grouped>
-              <div class="control">
-                <b-button native-type="submit" type="is-info">Submit</b-button>
-              </div>
-              <div class="control">
-                <b-button type="is-info is-outlined" @click.prevent="formReset">Reset</b-button>
-              </div>
-            </b-field>
+            <div class="control">
+              <b-button native-type="submit" type="is-info">Import</b-button>
+            </div>
           </b-field>
         </form>
       </card-component>
@@ -57,11 +52,6 @@ export default defineComponent({
     },
   },
   methods: {
-    formReset() {
-      this.form.policy = this.occurrence.policy
-      this.form.description = this.occurrence.description
-      this.form.files = null
-    },
     async formAction() {
       for (const file of this.form.files) {
         const fd = new FormData()

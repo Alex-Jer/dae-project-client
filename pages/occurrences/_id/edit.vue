@@ -101,7 +101,6 @@ export default defineComponent({
     formReset() {
       this.form.policy = this.occurrence.policy
       this.form.description = this.occurrence.description
-      this.form.files = null
     },
     async formAction() {
       let errorMsg = ''

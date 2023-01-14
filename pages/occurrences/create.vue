@@ -111,7 +111,6 @@ export default defineComponent({
       this.form.customer = ''
       this.form.policy = ''
       this.form.description = ''
-      this.form.files = null
     },
     formAction() {
       if (!this.hasFile) {
