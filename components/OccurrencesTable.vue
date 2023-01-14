@@ -20,6 +20,7 @@
       @cancel="approveCancel"
     />
     <modal-box
+      is-danger
       :is-active="isRejectModalActive"
       title="Reject occurrence"
       :body="`Are you sure you want to reject the occurrence #${occurrence?.id}?`"

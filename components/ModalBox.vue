@@ -12,7 +12,7 @@
         <b-button native-type="button" :type="isDanger ? 'is-danger' : 'is-primary'" @click="confirm">
           {{ confirmText }}
         </b-button>
-        <b-button :type="isDanger ? 'is-secondary' : 'is-danger'" outlined @click="cancel">{{ cancelText }}</b-button>
+        <b-button type="is-secondary" outlined @click="cancel">{{ cancelText }}</b-button>
       </footer>
     </div>
   </b-modal>
