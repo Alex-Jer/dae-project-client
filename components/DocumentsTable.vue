@@ -10,7 +10,6 @@
       </b-table-column>
 
       <b-table-column v-slot="props" custom-key="actions" cell-class="is-actions-cell">
-        <!-- v-if="showAdministratorActions" -->
         <div class="buttons is-right no-wrap">
           <b-button type="is-info" size="is-small" @click.prevent="download(props.row)">
             <b-icon icon="download" size="is-small" />

@@ -4,12 +4,6 @@
     <section class="section is-main-section">
       <card-component title="Import Occurrences" icon="upload">
         <form @submit.prevent="formAction">
-          <!--<b-field label="Customer's VAT" horizontal>
-            <b-input v-model="form.customerVat" disabled />
-          </b-field> METER AQUI ALGO?
-
-          <hr />-->
-
           <b-field label="Add CSV Files" horizontal>
             <file-picker v-model="form.files" type="is-info" />
           </b-field>
